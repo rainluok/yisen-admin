@@ -1,0 +1,34 @@
+# Vue
+node_modules/
+dist/
+*.local
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.tmp
+
+# Spring Boot
+/target/
+*.log
+
+# Cursor (ide: cursor.dev)
+.cursor/
+*.cursor
+
+# Intellij IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+# VSCode
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
