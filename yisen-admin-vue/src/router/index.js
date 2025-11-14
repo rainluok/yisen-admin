@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "@/stores/userStore";
-import { getToken } from "@/utils/auth";
-import Layout from "@/components/layout/Layout.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
+import { getToken } from '@/utils/auth';
+import Layout from '@/components/layout/Layout.vue';
+import nProgress from 'nprogress';
 
 /**
  * 公共路由
@@ -9,27 +10,27 @@ import Layout from "@/components/layout/Layout.vue";
  */
 export const constantRoutes = [
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("@/views/login/index.vue"),
-    meta: { title: "登录", hidden: true },
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue'),
+    meta: { title: '登录', hidden: true },
   },
   {
-    path: "/404",
-    name: "404",
-    component: () => import("@/views/error/404.vue"),
-    meta: { title: "404", hidden: true },
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/error/404.vue'),
+    meta: { title: '404', hidden: true },
   },
   {
-    path: "/",
+    path: '/',
     component: Layout,
-    redirect: "/dashboard",
+    redirect: '/dashboard',
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
-        meta: { title: "仪表盘", icon: "dashboard", affix: true },
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        meta: { title: '仪表盘', icon: 'dashboard', affix: true },
       },
     ],
   },
@@ -41,51 +42,51 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: "/task",
+    path: '/task',
     component: Layout,
-    redirect: "/task/list",
-    name: "Task",
-    meta: { title: "任务管理", icon: "task" },
+    redirect: '/task/list',
+    name: 'Task',
+    meta: { title: '任务管理', icon: 'task' },
     children: [
       {
-        path: "list",
-        name: "TaskList",
-        component: () => import("@/views/task/list.vue"),
-        meta: { title: "任务列表", icon: "list" },
+        path: 'list',
+        name: 'TaskList',
+        component: () => import('@/views/task/task-list.vue'),
+        meta: { title: '任务列表', icon: 'list' },
       },
       {
-        path: "calendar",
-        name: "TaskCalendar",
-        component: () => import("@/views/task/calendar.vue"),
-        meta: { title: "任务日历", icon: "calendar" },
+        path: 'calendar',
+        name: 'TaskCalendar',
+        component: () => import('@/views/task/task-calendar.vue'),
+        meta: { title: '任务日历', icon: 'calendar' },
       },
       {
-        path: "detail/:id",
-        name: "TaskDetail",
-        component: () => import("@/views/task/detail.vue"),
-        meta: { title: "任务详情", hidden: true },
+        path: 'detail/:id',
+        name: 'TaskDetail',
+        component: () => import('@/views/task/task-detail.vue'),
+        meta: { title: '任务详情', hidden: true },
       },
     ],
   },
   {
-    path: "/user",
+    path: '/user',
     component: Layout,
-    redirect: "/user/list",
-    name: "User",
-    meta: { title: "用户管理", icon: "user", permission: "user:view" },
+    redirect: '/user/list',
+    name: 'User',
+    meta: { title: '用户管理', icon: 'user', permission: 'user:view' },
     children: [
       {
-        path: "list",
-        name: "UserList",
-        component: () => import("@/views/user/list.vue"),
-        meta: { title: "用户列表", icon: "list" },
+        path: 'list',
+        name: 'UserList',
+        component: () => import('@/views/user/user-list.vue'),
+        meta: { title: '用户列表', icon: 'list' },
       },
     ],
   },
   // 404 页面必须放在最后
   {
-    path: "/:pathMatch(.*)*",
-    redirect: "/404",
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
     meta: { hidden: true },
   },
 ];
@@ -104,21 +105,20 @@ const router = createRouter({
 });
 
 // 白名单，不需要登录的页面
-const whiteList = ["/login", "/404"];
+const whiteList = ['/login', '/404'];
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
+  nProgress.start();
   // 设置页面标题
-  document.title = to.meta.title
-    ? `${to.meta.title} - 益森管理系统`
-    : "益森管理系统";
+  document.title = to.meta.title ? `${to.meta.title} - 益森管理系统` : '益森管理系统';
 
   const token = getToken();
 
   if (token) {
-    if (to.path === "/login") {
+    if (to.path === '/login') {
       // 已登录，跳转到首页
-      next({ path: "/" });
+      next({ path: '/' });
     } else {
       const userStore = useUserStore();
 
@@ -152,6 +152,10 @@ router.beforeEach(async (to, from, next) => {
       next(`/login?redirect=${to.path}`);
     }
   }
+});
+
+router.afterEach(() => {
+  nProgress.done();
 });
 
 export default router;
