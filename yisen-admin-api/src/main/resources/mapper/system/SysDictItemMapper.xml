@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yisen.module.system.dict.mapper.SysDictItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.yisen.module.system.dict.model.po.SysDictItem">
+            <id property="id" column="id" />
+            <result property="dictId" column="dict_id" />
+            <result property="itemName" column="item_name" />
+            <result property="itemValue" column="item_value" />
+            <result property="sort" column="sort" />
+            <result property="status" column="status" />
+            <result property="isDeleted" column="is_deleted" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,dict_id,item_name,item_value,sort,status,
+        is_deleted
+    </sql>
+</mapper>

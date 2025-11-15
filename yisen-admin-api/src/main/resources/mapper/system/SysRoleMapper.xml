@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yisen.module.system.role.mapper.SysRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.yisen.module.system.role.model.po.SysRole">
+            <id property="id" column="id" />
+            <result property="roleName" column="role_name" />
+            <result property="roleCode" column="role_code" />
+            <result property="description" column="description" />
+            <result property="status" column="status" />
+            <result property="isDeleted" column="is_deleted" />
+            <result property="createBy" column="create_by" />
+            <result property="createTime" column="create_time" />
+            <result property="updateBy" column="update_by" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_name,role_code,description,status,is_deleted,
+        create_by,create_time,update_by,update_time
+    </sql>
+
+    <!-- 角色详情 ResultMap（包含菜单信息） -->
+    <resultMap id="RoleDetailResultMap" type="com.yisen.module.system.role.model.vo.RoleDetailVO">
+        <id property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <!-- 菜单信息集合映射 -->
+        <collection property="menus" ofType="com.yisen.module.system.role.model.vo.RoleDetailVO$MenuVO">
+            <id property="id" column="menu_id"/>
+            <result property="menuName" column="menu_name"/>
+            <result property="menuCode" column="menu_code"/>
+            <result property="type" column="menu_type"/>
+        </collection>
+    </resultMap>
+
+    <!-- 分页查询角色列表（包含菜单信息） -->
+    <select id="selectRolePageWithMenus" resultMap="RoleDetailResultMap">
+        SELECT DISTINCT
+            r.id,
+            r.role_name,
+            r.role_code,
+            r.description,
+            r.status,
+            r.create_by,
+            r.create_time,
+            r.update_by,
+            r.update_time,
+            m.id as menu_id,
+            m.menu_name,
+            m.menu_code,
+            m.type as menu_type
+        FROM sys_role r
+        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+        LEFT JOIN sys_menu m ON rm.menu_id = m.id AND m.is_deleted = 0
+        WHERE r.is_deleted = 0
+        <if test="query != null">
+            <if test="query.roleName != null and query.roleName != ''">
+                AND r.role_name LIKE CONCAT('%', #{query.roleName}, '%')
+            </if>
+            <if test="query.roleCode != null and query.roleCode != ''">
+                AND r.role_code LIKE CONCAT('%', #{query.roleCode}, '%')
+            </if>
+            <if test="query.status != null">
+                AND r.status = #{query.status}
+            </if>
+            <if test="query.createTimeStart != null and query.createTimeStart != ''">
+                AND r.create_time &gt;= #{query.createTimeStart}
+            </if>
+            <if test="query.createTimeEnd != null and query.createTimeEnd != ''">
+                AND r.create_time &lt;= #{query.createTimeEnd}
+            </if>
+        </if>
+        ORDER BY r.create_time DESC
+    </select>
+
+    <!-- 根据ID查询角色详情（包含菜单信息） -->
+    <select id="selectRoleDetailById" resultMap="RoleDetailResultMap">
+        SELECT
+            r.id,
+            r.role_name,
+            r.role_code,
+            r.description,
+            r.status,
+            r.create_by,
+            r.create_time,
+            r.update_by,
+            r.update_time,
+            m.id as menu_id,
+            m.menu_name,
+            m.menu_code,
+            m.type as menu_type
+        FROM sys_role r
+        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+        LEFT JOIN sys_menu m ON rm.menu_id = m.id AND m.is_deleted = 0
+        WHERE r.id = #{id}
+          AND r.is_deleted = 0
+    </select>
+
+</mapper>
