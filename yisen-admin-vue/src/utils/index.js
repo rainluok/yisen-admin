@@ -38,7 +38,7 @@ export function throttle(fn, delay = 300) {
  * @param {any} obj - 需要拷贝的对象
  */
 export function deepClone(obj) {
-  if (obj === null || typeof obj !== "object") return obj;
+  if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return new Date(obj);
   if (obj instanceof RegExp) return new RegExp(obj);
   if (obj instanceof Array) {
@@ -58,23 +58,17 @@ export function deepClone(obj) {
  * @param {Date|string|number} date - 日期
  * @param {string} format - 格式化字符串
  */
-export function formatDate(date, format = "YYYY-MM-DD HH:mm:ss") {
-  if (!date) return "";
+export function formatDate(date, format = 'YYYY-MM-DD HH:mm:ss') {
+  if (!date) return '';
   const d = new Date(date);
   const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const hour = String(d.getHours()).padStart(2, "0");
-  const minute = String(d.getMinutes()).padStart(2, "0");
-  const second = String(d.getSeconds()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hour = String(d.getHours()).padStart(2, '0');
+  const minute = String(d.getMinutes()).padStart(2, '0');
+  const second = String(d.getSeconds()).padStart(2, '0');
 
-  return format
-    .replace("YYYY", year)
-    .replace("MM", month)
-    .replace("DD", day)
-    .replace("HH", hour)
-    .replace("mm", minute)
-    .replace("ss", second);
+  return format.replace('YYYY', year).replace('MM', month).replace('DD', day).replace('HH', hour).replace('mm', minute).replace('ss', second);
 }
 
 /**
@@ -82,11 +76,11 @@ export function formatDate(date, format = "YYYY-MM-DD HH:mm:ss") {
  * @param {number} bytes - 字节数
  */
 export function formatFileSize(bytes) {
-  if (bytes === 0) return "0 B";
+  if (bytes === 0) return '0 B';
   const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
 /**
@@ -103,7 +97,7 @@ export function generateId() {
  */
 export function downloadFile(blob, filename) {
   const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const link = document.createElement('a');
   link.href = url;
   link.download = filename;
   link.click();
@@ -126,12 +120,7 @@ export function getQueryParam(name) {
  * @param {string} pidKey - 父ID字段名
  * @param {string} childrenKey - 子节点字段名
  */
-export function arrayToTree(
-  data,
-  idKey = "id",
-  pidKey = "pid",
-  childrenKey = "children"
-) {
+export function arrayToTree(data, idKey = 'id', pidKey = 'pid', childrenKey = 'children') {
   const result = [];
   const map = {};
 
@@ -156,7 +145,7 @@ export function arrayToTree(
  * @param {Array} tree - 树形数据
  * @param {string} childrenKey - 子节点字段名
  */
-export function treeToArray(tree, childrenKey = "children") {
+export function treeToArray(tree, childrenKey = 'children') {
   const result = [];
   const traverse = (nodes) => {
     nodes.forEach((node) => {

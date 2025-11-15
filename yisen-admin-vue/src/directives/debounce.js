@@ -4,19 +4,18 @@
  */
 export const debounce = {
   mounted(el, binding) {
-    const delay = binding.arg ? parseInt(binding.arg) : 300
-    let timer = null
+    const delay = binding.arg ? parseInt(binding.arg) : 300;
+    let timer = null;
 
     el.addEventListener('click', () => {
       if (timer) {
-        clearTimeout(timer)
+        clearTimeout(timer);
       }
       timer = setTimeout(() => {
-        binding.value()
-      }, delay)
-    })
-  }
-}
+        binding.value();
+      }, delay);
+    });
+  },
+};
 
-export default debounce
-
+export default debounce;

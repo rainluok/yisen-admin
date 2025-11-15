@@ -1,21 +1,13 @@
-import { defineStore } from "pinia";
-import { login, logout, getUserInfo as getUserInfoApi } from "@/api/user";
-import {
-  setToken,
-  removeToken,
-  setUserInfo,
-  removeUserInfo,
-  setPermissions,
-  removePermissions,
-  clearAuth,
-} from "@/utils/auth";
+import { defineStore } from 'pinia';
+import { getUserInfo as getUserInfoApi, login, logout } from '@/api/user';
+import { clearAuth, setPermissions, setToken, setUserInfo } from '@/utils/auth';
 
-export const useUserStore = defineStore("user", {
+export const useUserStore = defineStore('user', {
   state: () => ({
-    token: "",
-    name: "",
-    avatar: "",
-    email: "",
+    token: '',
+    name: '',
+    avatar: '',
+    email: '',
     roles: [],
     permissions: [],
   }),
@@ -63,14 +55,14 @@ export const useUserStore = defineStore("user", {
         const data = await getUserInfoApi();
 
         if (!data) {
-          throw new Error("获取用户信息失败，请重新登录");
+          throw new Error('获取用户信息失败，请重新登录');
         }
 
         const { name, avatar, email, roles, permissions } = data;
 
         // 验证返回的数据
         if (!roles || roles.length <= 0) {
-          throw new Error("用户角色不能为空");
+          throw new Error('用户角色不能为空');
         }
 
         this.name = name;
@@ -96,7 +88,7 @@ export const useUserStore = defineStore("user", {
       try {
         await logout();
       } catch (error) {
-        console.error("登出失败:", error);
+        console.error('登出失败:', error);
       } finally {
         this.resetState();
       }
@@ -106,10 +98,10 @@ export const useUserStore = defineStore("user", {
      * 重置状态
      */
     resetState() {
-      this.token = "";
-      this.name = "";
-      this.avatar = "";
-      this.email = "";
+      this.token = '';
+      this.name = '';
+      this.avatar = '';
+      this.email = '';
       this.roles = [];
       this.permissions = [];
 
@@ -123,7 +115,7 @@ export const useUserStore = defineStore("user", {
     hasPermission(permission) {
       if (!permission) return true;
 
-      if (typeof permission === "string") {
+      if (typeof permission === 'string') {
         return this.permissions.includes(permission);
       }
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/user.js';
 import { getToken } from './auth';
 import { HTTP_STATUS } from '@/constants/status';
 import { getApiBaseUrl } from './env';

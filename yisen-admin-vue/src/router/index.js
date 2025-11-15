@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/user.js';
 import { getToken } from '@/utils/auth';
 import Layout from '@/components/layout/Layout.vue';
 import nProgress from 'nprogress';

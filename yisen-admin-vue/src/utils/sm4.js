@@ -4,7 +4,7 @@
  */
 
 // SM4 密钥（实际使用时应从配置中获取）
-const SM4_KEY = "0123456789abcdeffedcba9876543210";
+const SM4_KEY = '0123456789abcdeffedcba9876543210';
 
 /**
  * SM4 加密
@@ -17,7 +17,7 @@ export function sm4Encrypt(data, key = SM4_KEY) {
   // 示例: import { sm4 } from 'sm-crypto'
   // return sm4.encrypt(data, key)
 
-  console.warn("SM4 加密功能需要集成 sm-crypto 库");
+  console.warn('SM4 加密功能需要集成 sm-crypto 库');
   return data;
 }
 
@@ -32,7 +32,7 @@ export function sm4Decrypt(encryptedData, key = SM4_KEY) {
   // 示例: import { sm4 } from 'sm-crypto'
   // return sm4.decrypt(encryptedData, key)
 
-  console.warn("SM4 解密功能需要集成 sm-crypto 库");
+  console.warn('SM4 解密功能需要集成 sm-crypto 库');
   return encryptedData;
 }
 
@@ -42,7 +42,7 @@ export function sm4Decrypt(encryptedData, key = SM4_KEY) {
  * @param {Array} fields - 需要加密的字段列表
  * @returns {Object} 加密后的对象
  */
-export function encryptFields(obj, fields = ["password"]) {
+export function encryptFields(obj, fields = ['password']) {
   const result = { ...obj };
   fields.forEach((field) => {
     if (result[field]) {
@@ -58,7 +58,7 @@ export function encryptFields(obj, fields = ["password"]) {
  * @param {Array} fields - 需要解密的字段列表
  * @returns {Object} 解密后的对象
  */
-export function decryptFields(obj, fields = ["password"]) {
+export function decryptFields(obj, fields = ['password']) {
   const result = { ...obj };
   fields.forEach((field) => {
     if (result[field]) {

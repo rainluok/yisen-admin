@@ -15,8 +15,8 @@ body {
   width: 100%;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
   font-size: $font-size-base;
   line-height: $line-height-base;
   color: $text-primary;
@@ -133,7 +133,7 @@ a {
 /* 搜索表单 */
 .search-form {
   margin-bottom: $spacing-lg;
-  
+
   .el-form-item {
     margin-bottom: $spacing-md;
   }

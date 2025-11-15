@@ -1,38 +1,37 @@
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 /**
  * 加载状态管理
  */
 export function useLoading(initialState = false) {
-  const loading = ref(initialState)
+  const loading = ref(initialState);
 
   const setLoading = (value) => {
-    loading.value = value
-  }
+    loading.value = value;
+  };
 
   const startLoading = () => {
-    loading.value = true
-  }
+    loading.value = true;
+  };
 
   const stopLoading = () => {
-    loading.value = false
-  }
+    loading.value = false;
+  };
 
   const withLoading = async (fn) => {
-    startLoading()
+    startLoading();
     try {
-      return await fn()
+      return await fn();
     } finally {
-      stopLoading()
+      stopLoading();
     }
-  }
+  };
 
   return {
     loading,
     setLoading,
     startLoading,
     stopLoading,
-    withLoading
-  }
+    withLoading,
+  };
 }
-

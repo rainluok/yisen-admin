@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useAppStore = defineStore("app", {
+export const useAppStore = defineStore('app', {
   state: () => ({
     // 侧边栏
     sidebar: {
@@ -8,11 +8,11 @@ export const useAppStore = defineStore("app", {
       withoutAnimation: false,
     },
     // 设备类型
-    device: "desktop",
+    device: 'desktop',
     // 主题
-    theme: "light",
+    theme: 'light',
     // 语言
-    language: "zh-cn",
+    language: 'zh-cn',
     // 页面加载状态
     loading: false,
     // 缓存的页面
@@ -28,7 +28,7 @@ export const useAppStore = defineStore("app", {
     /**
      * 是否移动设备
      */
-    isMobile: (state) => state.device === "mobile",
+    isMobile: (state) => state.device === 'mobile',
   },
 
   actions: {
@@ -71,7 +71,7 @@ export const useAppStore = defineStore("app", {
     toggleTheme(theme) {
       this.theme = theme;
       // 保存到本地存储
-      localStorage.setItem("yisen_admin_theme", theme);
+      localStorage.setItem('yisen_admin_theme', theme);
     },
 
     /**
@@ -81,7 +81,7 @@ export const useAppStore = defineStore("app", {
     setLanguage(language) {
       this.language = language;
       // 保存到本地存储
-      localStorage.setItem("yisen_admin_language", language);
+      localStorage.setItem('yisen_admin_language', language);
     },
 
     /**
@@ -124,19 +124,19 @@ export const useAppStore = defineStore("app", {
      */
     initApp() {
       // 从本地存储读取主题
-      const theme = localStorage.getItem("yisen_admin_theme");
+      const theme = localStorage.getItem('yisen_admin_theme');
       if (theme) {
         this.theme = theme;
       }
 
       // 从本地存储读取语言
-      const language = localStorage.getItem("yisen_admin_language");
+      const language = localStorage.getItem('yisen_admin_language');
       if (language) {
         this.language = language;
       }
 
       // 检测设备类型
-      this.device = this.isMobileDevice() ? "mobile" : "desktop";
+      this.device = this.isMobileDevice() ? 'mobile' : 'desktop';
     },
 
     /**

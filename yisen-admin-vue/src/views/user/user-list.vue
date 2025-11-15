@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onMounted } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import { ElMessage } from 'element-plus';
   import { getUserList } from '@/api/user';
   import { USER_STATUS, USER_STATUS_TEXT } from '@/constants/status';
