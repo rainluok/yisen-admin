@@ -34,7 +34,7 @@ public enum BusinessType {
     /**
      * 部门管理
      */
-    DEPT("dept", "部门管理"),
+    DEPART("DEPART", "部门管理"),
 
     /**
      * 岗位管理

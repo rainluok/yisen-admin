@@ -65,6 +65,18 @@ public class PageResult<T> implements Serializable {
     @Schema(description = "是否有下一页", example = "true")
     private Boolean hasNext;
 
+    public static <T> PageResult<T> of(IPage<?> page, List<T> records) {
+        PageResult<T> result = new PageResult<>();
+        result.setRecords(records);
+        result.setTotal(page.getTotal());
+        result.setPageNum(page.getCurrent());
+        result.setPageSize(page.getSize());
+        result.setPages(page.getPages());
+        result.setHasPrevious(page.getCurrent() > 1);
+        result.setHasNext(page.getCurrent() < page.getPages());
+        return result;
+    }
+
     /**
      * 从 MyBatis-Plus 的 IPage 转换
      */

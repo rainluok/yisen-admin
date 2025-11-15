@@ -76,13 +76,30 @@ public enum ResponseCodeEnum {
     ROLE_DELETED(2103, "角色已被删除"),
 
     /**
-     * 菜单相关错误 22xx
+     * 系统业务错误 xxx
      */
     MENU_NOT_FOUND(2201, "菜单不存在"),
     MENU_IDS_EMPTY(2202, "菜单ID列表不能为空"),
     MENU_CODE_EXISTS(2203, "菜单编码已存在"),
     MENU_DELETED(2204, "菜单已被删除"),
     MENU_HAS_CHILDREN(2205, "菜单下有子菜单，无法删除"),
+
+    DEPART_NOT_FOUND(2301, "部门不存在"),
+    DEPART_CODE_EXISTS(2302, "部门编码已存在"),
+    DEPART_DELETED(2303, "部门已被删除"),
+    DEPART_HAS_CHILDREN(2304, "部门下有子部门，无法删除"),
+    DEPART_HAS_USERS(2305, "部门下有用户，无法删除"),
+    DEPART_HAS_USERS_NOT_IN_THIS_DEPART(2306, "部门下有用户，请先将用户移出部门"),
+    DEPART_HAS_USERS_NOT_IN_THIS_DEPART_OR_CHILDREN_DEPART(2307, "部门下有用户，请先将用户移出部门或子部门"),
+    PARENT_DEPART_NOT_EXISTS(2308, "上级部门不存在"),
+    DEPART_PARENT_CANNOT_BE_SELF(2309, "上级部门不能为自己"),
+
+    DICT_NOT_EXISTS(24001, "字典不存在"),
+    DICT_ITEM_VALUE_EXISTS(2402, "字典项值已存在"),
+    DICT_ITEM_NOT_EXISTS(2403, "字典项不存在"),
+    DICT_CODE_EXISTS (2404, "字典编码已存在"),
+
+    LOG_NOT_EXISTS(2501, "日志不存在"),
 
     // ==================== 安全类错误码 4xxx ====================
     TOKEN_INVALID(4001, "Token无效"),

@@ -115,16 +115,4 @@ public class SysUserController {
         return Result.success(status == 1 ? "启用用户成功" : "禁用用户成功");
     }
 
-    /**
-     * 重置用户密码
-     */
-    @PutMapping("/reset-password")
-    @Operation(summary = "重置用户密码", description = "管理员重置用户密码")
-    @OperationLog(value = "重置用户密码", type = OperationType.UPDATE, bizType = BusinessType.USER)
-    @RequirePermission("sys:user:reset-password")
-    public Result<Void> resetPassword(@RequestBody @Valid UserResetPasswordDTO dto) {
-        sysUserService.resetPassword(dto);
-        return Result.success("重置密码成功");
-    }
-
 }
