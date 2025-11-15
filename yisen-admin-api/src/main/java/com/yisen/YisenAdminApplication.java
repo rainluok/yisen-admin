@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class YisenAdminApplication {
 
     public static void main(String[] args) {
-        IpUtil.init("C:\\Users\\rainluo\\Documents\\code\\yisen-admin\\yisen-admin-api\\src\\main\\resources\\data\\ip2region_v4.xdb");
+        // 构建一个data/ip2region_v4.xdb文件 的绝对路径
+        String dbPath = System.getProperty("user.dir") + "/src/main/resources/data/ip2region_v4.xdb";
+        IpUtil.init(dbPath);
         SpringApplication.run(YisenAdminApplication.class, args);
     }
 
