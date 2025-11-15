@@ -72,3 +72,17 @@ $z-index-sidebar: 900;
 $z-index-modal: 2000;
 $z-index-message: 3000;
 $z-index-loading: 4000;
+
+$header-height: 60px;
+$sidebar-width: 200px;
+$sidebar-collapsed-width: 64px;
+$sidebar-logo-height: 60px;
+$sidebar-logo-collapsed-height: 60px;
+$sidebar-logo-font-size: 18px;
+$sidebar-logo-font-size-collapsed: 14px;
+$sidebar-logo-font-color: $text-primary;
+$sidebar-logo-font-color-collapsed: $text-primary;
+$sidebar-logo-font-weight: $font-weight-bold;
+$sidebar-logo-font-weight-collapsed: $font-weight-bold;
+$sidebar-logo-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+

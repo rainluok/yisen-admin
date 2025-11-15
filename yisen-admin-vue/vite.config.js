@@ -22,7 +22,8 @@ export default defineConfig(({ mode }) => {
       AutoImport({
         resolvers: [ElementPlusResolver()],
         // 可选补充：自动导入 Vue 相关API
-        imports: ['vue', 'vue-router', 'pinia'], }),
+        imports: ['vue', 'vue-router', 'pinia'],
+      }),
       // 自动导入 Element Plus 组件
       Components({
         resolvers: [ElementPlusResolver()],
@@ -83,7 +84,7 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/styles/variables.scss" as *;`,
+          additionalData: `@use "@/styles/index.scss" as *;`,
         },
       },
     },

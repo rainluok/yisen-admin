@@ -1,11 +1,11 @@
 <template>
   <div class="sidebar-container" :class="{ collapsed: !sidebarOpened }">
     <div class="web-title">
-      <img class="web-logo" :src="LOGO" alt="logo"/>
-      <span>益森管理系统</span>
+      <img class="web-logo" :src="LOGO" alt="logo" />
+      <span v-show="sidebarOpened" class="title-text">益森管理系统</span>
     </div>
-    <el-scrollbar>
-      <el-menu :default-active="activeMenu" :collapse="!sidebarOpened" :collapse-transition="false" :unique-opened="true" router>
+    <el-scrollbar class="sidebar-scrollbar">
+      <el-menu :default-active="activeMenu" :collapse="!sidebarOpened" :collapse-transition="false" :unique-opened="true" router class="sidebar-menu">
         <sidebar-item v-for="route in menuRoutes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
@@ -14,17 +14,18 @@
 
 <script setup>
   import { computed } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRoute } from 'vue-router';
   import { useAppStore } from '@/stores/app.js';
   import { useUserStore } from '@/stores/system/user.js';
-  import SidebarItem from './SidebarItem.vue';
   import { useMenuStore } from '@/stores/index.js';
+  import SidebarItem from './SidebarItem.vue';
   import LOGO from '@/assets/images/logo.jpg';
+
   const route = useRoute();
-  const router = useRouter();
   const appStore = useAppStore();
   const userStore = useUserStore();
   const menuStore = useMenuStore();
+
   // 侧边栏状态
   const sidebarOpened = computed(() => appStore.sidebarOpened);
 
@@ -61,56 +62,64 @@
 </script>
 
 <style scoped lang="scss">
+  @import '@/styles/variables.scss';
+
   .sidebar-container {
-    width: 200px;
+    width: $sidebar-width;
     height: 100%;
-    //background-color: #304156;
+    background-color: #304156;
     transition: width 0.28s;
     overflow: hidden;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: $z-index-sidebar;
 
     &.collapsed {
-      width: 64px;
+      width: $sidebar-collapsed-width;
     }
 
-    :deep(.el-scrollbar) {
-      height: 100%;
-    }
-
-    .web-title{
+    .web-title {
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid #e6e6e6;
-      width: 200px;
-      height: 60px;
-      margin:0 auto;
+      border-bottom: 1px solid #2a3a4a;
+      width: $sidebar-width;
+      height: $sidebar-logo-height;
+      margin: 0 auto;
+      background-color: #2a3a4a;
+      transition: all 0.28s;
+      overflow: hidden;
 
-      .web-logo{
-        width: 40px;
-        height: 40px;
+      .web-logo {
+        width: 32px;
+        height: 32px;
+        transition: all 0.28s;
+      }
+
+      .title-text {
+        margin-left: $spacing-sm;
+        font-size: $sidebar-logo-font-size;
+        font-weight: $sidebar-logo-font-weight;
+        color: $sidebar-logo-font-color;
+        white-space: nowrap;
+        transition: all 0.28s;
+        opacity: 1;
+      }
+
+      .collapsed & {
+        width: $sidebar-collapsed-width;
+
+        .title-text {
+          opacity: 0;
+          width: 0;
+          height: 0;
+          overflow: hidden;
+        }
       }
     }
-    //:deep(.el-menu) {
-    //  border-right: none;
-    //  background-color: #304156;
-    //}
 
-    //:deep(.el-menu-item),
-    //:deep(.el-submenu__title) {
-    //  color: #bfcbd9;
-    //
-    //  &:hover {
-    //    background-color: #263445 !important;
-    //  }
+    .sidebar-scrollbar {
+      height: calc(100% - #{$sidebar-logo-height});
+    }
   }
-
-  //:deep(.el-menu-item.is-active) {
-  //  background-color: #409eff !important;
-  //  color: #fff;
-  //}
-  //
-  //:deep(.el-submenu.is-active > .el-submenu__title) {
-  //  color: #409eff;
-  //}
-  //}
 </style>

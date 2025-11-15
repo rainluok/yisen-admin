@@ -1,24 +1,28 @@
 <template>
   <template v-if="!item?.hidden">
     <!-- 有子菜单 -->
-    <el-sub-menu v-if="item.children && item.children.filter((child) => child.type === 1).length > 0" :index="resolvePath(item.path)">
+    <el-sub-menu
+      v-if="item.children && item.children.filter((child) => child.type === 1).length > 0"
+      :index="resolvePath(item.path)"
+      class="sidebar-sub-menu"
+    >
       <template #title>
-        <el-icon v-if="item?.icon">
+        <el-icon v-if="item?.icon" class="sidebar-icon">
           <component :is="item.icon" />
         </el-icon>
-        <span>{{ item?.menuName }}</span>
+        <span class="sidebar-title">{{ item?.menuName }}</span>
       </template>
 
       <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :base-path="resolvePath(item.path)" />
     </el-sub-menu>
 
     <!-- 无子菜单 -->
-    <el-menu-item v-else :index="resolvePath(item.path)">
-      <el-icon v-if="item?.icon">
+    <el-menu-item v-else :index="resolvePath(item.path)" class="sidebar-menu-item">
+      <el-icon v-if="item?.icon" class="sidebar-icon">
         <component :is="item.icon" />
       </el-icon>
       <template #title>
-        <span>{{ item?.menuName }}</span>
+        <span class="sidebar-title">{{ item?.menuName }}</span>
       </template>
     </el-menu-item>
   </template>
@@ -67,3 +71,22 @@
     return joinPaths(props.basePath, routePath);
   };
 </script>
+
+<style scoped lang="scss">
+  @import '@/styles/variables.scss';
+
+  .sidebar-sub-menu,
+  .sidebar-menu-item {
+    .sidebar-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: $spacing-sm;
+      vertical-align: middle;
+    }
+
+    .sidebar-title {
+      font-size: $font-size-base;
+      transition: opacity 0.28s;
+    }
+  }
+</style>

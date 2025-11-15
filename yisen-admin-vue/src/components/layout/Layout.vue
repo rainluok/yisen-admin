@@ -1,21 +1,21 @@
 <template>
   <div class="app-layout">
     <Sidebar />
-      <div class="main-container">
-        <Header />
-        <div class="navbar-container">
-          <TagsView />
-        </div>
-        <div class="view-container">
-          <router-view v-slot="{ Component }">
-            <transition name="fade-transform" mode="out-in">
-              <keep-alive :include="cachedViews">
-                <component :is="Component" />
-              </keep-alive>
-            </transition>
-          </router-view>
-        </div>
+    <div class="main-container">
+      <Header />
+      <div class="tags-container">
+        <TagsView />
       </div>
+      <el-scrollbar class="view-container">
+        <router-view v-slot="{ Component }">
+          <transition name="fade-transform" mode="out-in">
+            <keep-alive :include="cachedViews">
+              <component :is="Component" />
+            </keep-alive>
+          </transition>
+        </router-view>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
@@ -38,25 +38,38 @@
     height: 100vh;
     width: 100%;
     overflow: hidden;
-  }
 
-  .main-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
 
-  .navbar-container {
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-  }
+      .tags-container {
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+      }
 
-  .view-container {
-    flex: 1;
-    overflow-y: auto;
-    background-color: #f2f3f5;
-    padding: 20px;
+      .view-container {
+        flex: 1;
+        background-color: #f2f3f5;
+
+        // Element Plus 滚动条样式
+        :deep(.el-scrollbar__wrap) {
+          overflow-x: hidden;
+        }
+
+        // 自定义滚动条样式（可选）
+        :deep(.el-scrollbar__bar) {
+          opacity: 0.3;
+          transition: opacity 0.3s;
+        }
+
+        &:hover :deep(.el-scrollbar__bar) {
+          opacity: 0.7;
+        }
+      }
+    }
   }
 
   /* 页面过渡动画 */

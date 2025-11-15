@@ -1,10 +1,5 @@
 <template>
   <div class="header-container">
-<!--    <div class="header-logo">-->
-<!--      <span>益森管理系统</span>-->
-
-
-<!--    </div>-->
     <div class="header-middle">
       <div class="toggle-btn" @click="toggleSidebar">
         <el-icon><Fold v-if="sidebarOpened" /><Expand v-else /></el-icon>
@@ -21,11 +16,14 @@
       <!-- 用户信息 -->
       <el-dropdown trigger="click" @command="handleCommand">
         <div class="user-info">
-          <el-avatar :size="32" :src="userStore.avatar">
+          <el-avatar :size="36" :src="userStore.avatar" class="user-avatar">
             {{ userStore.name?.charAt(0) }}
           </el-avatar>
-          <span class="user-name">{{ userStore.name }}</span>
-          <el-icon><ArrowDown /></el-icon>
+          <div class="user-details">
+            <div class="user-name">{{ userStore.name }}</div>
+            <div class="user-role">管理员</div>
+          </div>
+          <el-icon class="arrow-icon"><ArrowDown /></el-icon>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -49,161 +47,186 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { ElMessage, ElMessageBox } from 'element-plus';
-  import { ArrowDown, Expand, Fold, FullScreen, Setting, SwitchButton, User } from '@element-plus/icons-vue';
-  import { useAppStore } from '@/stores/app.js';
-  import { useUserStore } from '@/stores/system/user.js';
-  import Breadcrumb from '@components/layout/Breadcrumb.vue';
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { ArrowDown, Expand, Fold, FullScreen, Setting, SwitchButton, User } from '@element-plus/icons-vue'
+import { useAppStore } from '@/stores/app.js'
+import { useUserStore } from '@/stores/system/user.js'
+import Breadcrumb from '@components/layout/Breadcrumb.vue'
 
-  const router = useRouter();
-  const appStore = useAppStore();
-  const userStore = useUserStore();
+const router = useRouter()
+const appStore = useAppStore()
+const userStore = useUserStore()
 
-  // 侧边栏状态
-  const sidebarOpened = computed(() => appStore.sidebarOpened);
+// 侧边栏状态
+const sidebarOpened = computed(() => appStore.sidebarOpened)
 
-  // 切换侧边栏
-  const toggleSidebar = () => {
-    appStore.toggleSidebar();
-  };
+// 切换侧边栏
+const toggleSidebar = () => {
+  appStore.toggleSidebar()
+}
 
-  // 全屏切换
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+// 全屏切换
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
     }
-  };
+  }
+}
 
-  // 下拉菜单命令处理
-  const handleCommand = (command) => {
-    switch (command) {
-      case 'profile':
-        router.push('/user/profile');
-        break;
-      case 'settings':
-        router.push('/settings');
-        break;
-      case 'logout':
-        handleLogout();
-        break;
-    }
-  };
+// 下拉菜单命令处理
+const handleCommand = (command) => {
+  switch (command) {
+    case 'profile':
+      router.push('/user/profile')
+      break
+    case 'settings':
+      router.push('/settings')
+      break
+    case 'logout':
+      handleLogout()
+      break
+  }
+}
 
-  // 退出登录
-  const handleLogout = () => {
-    ElMessageBox.confirm('确定要退出登录吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
+// 退出登录
+const handleLogout = () => {
+  ElMessageBox.confirm('确定要退出登录吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      await userStore.logout()
+      ElMessage.success('退出成功')
+      router.push('/login')
     })
-      .then(async () => {
-        await userStore.logout();
-        ElMessage.success('退出成功');
-        router.push('/login');
-      })
-      .catch(() => {});
-  };
+    .catch(() => {})
+}
 </script>
 
 <style scoped lang="scss">
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    padding: 0 20px;
-    background-color: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    z-index: 1000;
+@import '@/styles/variables.scss';
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: $header-height;
+  padding: 0 $spacing-lg;
+  background: linear-gradient(90deg, $primary-color, darken($primary-color, 10%));
+  box-shadow: $box-shadow-base;
+  z-index: $z-index-header;
+  color: #fff;
+}
+
+.header-middle {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: $spacing-lg;
+  flex: 1;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: $transition-base;
+  background-color: rgba(255, 255, 255, 0.15);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
   }
 
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 180px;
+  .el-icon {
+    font-size: 20px;
+    color: #fff;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: $transition-base;
+  background-color: rgba(255, 255, 255, 0.15);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
   }
 
-  .header-middle {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 20px;
-    flex: 1;
+  .el-icon {
+    font-size: 20px;
+    color: #fff;
   }
+}
 
-  .toggle-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: $transition-base;
+  background-color: rgba(255, 255, 255, 0.15);
 
-    &:hover {
-      background-color: #f5f7fa;
-    }
-
-    .el-icon {
-      font-size: 20px;
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
   }
+}
 
-  .logo {
-    font-size: 18px;
-    font-weight: bold;
-    color: #303133;
-  }
+.user-avatar {
+  background-color: #fff;
+  color: $primary-color;
+}
 
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
 
-  .header-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+.user-name {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: #fff;
+  line-height: 1.2;
+}
 
-    &:hover {
-      background-color: #f5f7fa;
-    }
+.user-role {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.2;
+}
 
-    .el-icon {
-      font-size: 20px;
-    }
-  }
+.arrow-icon {
+  font-size: 16px;
+  color: #fff;
+  transition: transform 0.3s;
+}
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #f5f7fa;
-    }
-  }
-
-  .user-name {
-    font-size: 14px;
-    color: #303133;
-  }
+.user-info:hover .arrow-icon {
+  transform: rotate(180deg);
+}
 </style>
