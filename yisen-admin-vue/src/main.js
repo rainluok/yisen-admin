@@ -8,6 +8,8 @@ import { setupPlugins } from './plugins';
 import { setupDirectives } from './directives';
 import { printEnvInfo } from './utils/env';
 import 'reset-css';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 
 // 打印环境信息
 printEnvInfo();
@@ -19,6 +21,9 @@ const app = createApp(App);
 const pinia = createPinia();
 
 // 注册插件
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 app.use(ElementPlus);
 setupPlugins(app);
 

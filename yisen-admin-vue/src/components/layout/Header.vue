@@ -1,13 +1,14 @@
 <template>
   <div class="header-container">
-    <div class="header-left">
-      <div class="logo">
-        <span>益森管理系统</span>
-      </div>
+<!--    <div class="header-logo">-->
+<!--      <span>益森管理系统</span>-->
+
+
+<!--    </div>-->
+    <div class="header-middle">
       <div class="toggle-btn" @click="toggleSidebar">
         <el-icon><Fold v-if="sidebarOpened" /><Expand v-else /></el-icon>
       </div>
-
       <Breadcrumb />
     </div>
 
@@ -122,10 +123,19 @@
     z-index: 1000;
   }
 
-  .header-left {
+  .header-logo {
     display: flex;
     align-items: center;
     gap: 20px;
+    width: 180px;
+  }
+
+  .header-middle {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    flex: 1;
   }
 
   .toggle-btn {

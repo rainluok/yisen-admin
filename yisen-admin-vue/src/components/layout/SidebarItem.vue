@@ -1,13 +1,14 @@
 <template>
-  <div v-if="!item?.hidden">
+  <template v-if="!item?.hidden">
     <!-- 有子菜单 -->
-    <el-sub-menu v-if="item.children && item.children.filter(child => child.type === 1).length > 0 " :index="resolvePath(item.path)">
+    <el-sub-menu v-if="item.children && item.children.filter((child) => child.type === 1).length > 0" :index="resolvePath(item.path)">
       <template #title>
         <el-icon v-if="item?.icon">
           <component :is="item.icon" />
         </el-icon>
         <span>{{ item?.menuName }}</span>
       </template>
+
       <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :base-path="resolvePath(item.path)" />
     </el-sub-menu>
 
@@ -20,7 +21,7 @@
         <span>{{ item?.menuName }}</span>
       </template>
     </el-menu-item>
-  </div>
+  </template>
 </template>
 
 <script setup>

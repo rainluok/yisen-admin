@@ -1,5 +1,9 @@
 <template>
   <div class="sidebar-container" :class="{ collapsed: !sidebarOpened }">
+    <div class="web-title">
+      <img class="web-logo" :src="LOGO" alt="logo"/>
+      <span>益森管理系统</span>
+    </div>
     <el-scrollbar>
       <el-menu :default-active="activeMenu" :collapse="!sidebarOpened" :collapse-transition="false" :unique-opened="true" router>
         <sidebar-item v-for="route in menuRoutes" :key="route.path" :item="route" :base-path="route.path" />
@@ -15,7 +19,7 @@
   import { useUserStore } from '@/stores/system/user.js';
   import SidebarItem from './SidebarItem.vue';
   import { useMenuStore } from '@/stores/index.js';
-
+  import LOGO from '@/assets/images/logo.jpg';
   const route = useRoute();
   const router = useRouter();
   const appStore = useAppStore();
@@ -36,7 +40,6 @@
   // 菜单路由列表
   const menuRoutes = computed(() => {
     const userMenuTree = menuStore.userMenuTree;
-    console.log(11, userMenuTree);
     return userMenuTree.filter((menuItem) => {
       if (menuItem?.type !== 1) {
         return false;
@@ -73,6 +76,20 @@
       height: 100%;
     }
 
+    .web-title{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #e6e6e6;
+      width: 200px;
+      height: 60px;
+      margin:0 auto;
+
+      .web-logo{
+        width: 40px;
+        height: 40px;
+      }
+    }
     //:deep(.el-menu) {
     //  border-right: none;
     //  background-color: #304156;
