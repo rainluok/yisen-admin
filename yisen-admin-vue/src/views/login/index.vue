@@ -8,7 +8,7 @@
 
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form">
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="User" size="large" />
+          <el-input v-model="loginForm.username" placeholder="请输入用户名" :prefix-icon="User" size="large" />
         </el-form-item>
 
         <el-form-item prop="password">
@@ -16,7 +16,7 @@
             v-model="loginForm.password"
             type="password"
             placeholder="请输入密码"
-            prefix-icon="Lock"
+            :prefix-icon="Lock"
             size="large"
             show-password
             @keyup.enter="handleLogin"
@@ -39,7 +39,8 @@
   import { reactive, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { ElMessage } from 'element-plus';
-  import { useUserStore } from '@/stores/user.js';
+  import { useUserStore } from '@/stores/system/user.js';
+  import { Lock, User } from '@element-plus/icons-vue';
 
   const router = useRouter();
   const route = useRoute();
@@ -49,8 +50,8 @@
   const loginFormRef = ref(null);
 
   const loginForm = reactive({
-    username: '',
-    password: '',
+    username: 'admin',
+    password: '123456',
     remember: false,
   });
 

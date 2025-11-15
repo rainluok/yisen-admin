@@ -1,4 +1,4 @@
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/system/user.js';
 
 /**
  * 角色指令
