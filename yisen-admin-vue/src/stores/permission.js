@@ -114,7 +114,7 @@ export const usePermissionStore = defineStore('permission', {
       const path = componentPath.startsWith('/') ? componentPath.slice(1) : componentPath;
 
       return () =>
-        import(`@/${path}.vue`).catch((err) => {
+        import(`/src/views/${path}.vue`).catch((err) => {
           console.error(`加载组件失败: ${path}`, err);
           return import('@/views/error/404.vue');
         });

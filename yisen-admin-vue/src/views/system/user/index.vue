@@ -56,8 +56,10 @@
 <script setup>
   import { onMounted, reactive, ref } from 'vue';
   import { ElMessage } from 'element-plus';
-  import { getUserList } from '@/api/user';
+  import {useUserStore} from "@/stores/index.js";
   import { USER_STATUS, USER_STATUS_TEXT } from '@/constants/status';
+
+  const { getUserList } = useUserStore();
 
   const queryForm = reactive({
     username: '',
