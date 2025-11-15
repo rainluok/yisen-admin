@@ -60,10 +60,36 @@ public enum ResponseCodeEnum {
     USERNAME_PASSWORD_ERROR(2004, "用户名或密码错误"),
     USERNAME_EXISTS(2005, "用户名已存在"),
     USER_NOT_LOGIN(2006, "用户未登录"),
-    TOKEN_INVALID(2007, "Token无效"),
-    TOKEN_EXPIRED(2008, "Token已过期"),
     PERMISSION_DENIED(2009, "没有访问权限"),
     OLD_PASSWORD_ERROR(2010, "原密码错误"),
+    PASSWORD_ERROR(2011, "密码错误"),
+    USER_ALREADY_EXISTS(2012, "用户已存在"),
+    USER_DELETED(2013, "用户已被删除"),
+    INVALID_STATUS(2014, "状态值不合法"),
+    EMAIL_ALREADY_EXISTS(2015, "邮箱已存在"),
+
+    /**
+     * 角色相关错误 21xx
+     */
+    ROLE_NOT_FOUND(2101, "角色不存在"),
+    ROLE_ALREADY_EXISTS(2102, "角色已存在"),
+    ROLE_DELETED(2103, "角色已被删除"),
+
+    /**
+     * 菜单相关错误 22xx
+     */
+    MENU_NOT_FOUND(2201, "菜单不存在"),
+    MENU_IDS_EMPTY(2202, "菜单ID列表不能为空"),
+    MENU_CODE_EXISTS(2203, "菜单编码已存在"),
+    MENU_DELETED(2204, "菜单已被删除"),
+    MENU_HAS_CHILDREN(2205, "菜单下有子菜单，无法删除"),
+
+    // ==================== 安全类错误码 4xxx ====================
+    TOKEN_INVALID(4001, "Token无效"),
+    TOKEN_EXPIRED(4002, "Token已过期"),
+    IP_BLACKLISTED(4003, "IP已被封禁"),
+    REPEAT_SUBMIT(4004, "请勿重复提交"),
+    RATE_LIMIT_EXCEEDED(4005, "请求过于频繁，请稍后再试"),
 
     /**
      * 文件相关错误 3xxx
@@ -91,24 +117,16 @@ public enum ResponseCodeEnum {
     /**
      * 状态码
      */
-    private  Integer code;
+    private final Integer code;
 
     /**
      * 消息
      */
-    private  String message;
+    private final String message;
 
     ResponseCodeEnum(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
 

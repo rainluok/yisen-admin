@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public Result<?> handleBusinessException(BusinessException e, HttpServletRequest request) {
         log.warn("业务异常: URI={}, Code={}, Message={}",
-            request.getRequestURI(), e.getCode(), e.getMessage());
+                request.getRequestURI(), e.getCode(), e.getMessage());
         return Result.fail(e.getCode(), e.getMessage());
     }
 
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Result<?> handleSystemException(SystemException e, HttpServletRequest request) {
         log.error("系统异常: URI={}, Code={}, Message={}",
-            request.getRequestURI(), e.getCode(), e.getMessage(), e);
+                request.getRequestURI(), e.getCode(), e.getMessage(), e);
         return Result.fail(e.getCode(), e.getMessage());
     }
 
@@ -56,8 +57,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
         String errorMessage = e.getBindingResult().getFieldErrors().stream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.joining(", "));
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(", "));
 
         log.warn("参数校验失败: URI={}, Message={}", request.getRequestURI(), errorMessage);
         return Result.fail(ResponseCodeEnum.VALIDATION_ERROR.getCode(), errorMessage);
@@ -70,8 +71,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<?> handleBindException(BindException e, HttpServletRequest request) {
         String errorMessage = e.getFieldErrors().stream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.joining(", "));
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(", "));
 
         log.warn("参数绑定失败: URI={}, Message={}", request.getRequestURI(), errorMessage);
         return Result.fail(ResponseCodeEnum.BAD_REQUEST.getCode(), errorMessage);
@@ -84,8 +85,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<?> handleConstraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
         String errorMessage = e.getConstraintViolations().stream()
-            .map(ConstraintViolation::getMessage)
-            .collect(Collectors.joining(", "));
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.joining(", "));
 
         log.warn("约束违反: URI={}, Message={}", request.getRequestURI(), errorMessage);
         return Result.fail(ResponseCodeEnum.VALIDATION_ERROR.getCode(), errorMessage);
@@ -98,7 +99,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
         String errorMessage = String.format("参数 '%s' 类型错误，期望类型: %s",
-            e.getName(), e.getRequiredType().getSimpleName());
+                e.getName(), e.getRequiredType().getSimpleName());
 
         log.warn("参数类型不匹配: URI={}, Message={}", request.getRequestURI(), errorMessage);
         return Result.fail(ResponseCodeEnum.BAD_REQUEST.getCode(), errorMessage);
@@ -121,7 +122,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Result<?> handleSQLException(SQLException e, HttpServletRequest request) {
         log.error("数据库异常: URI={}, SQLState={}, Message={}",
-            request.getRequestURI(), e.getSQLState(), e.getMessage(), e);
+                request.getRequestURI(), e.getSQLState(), e.getMessage(), e);
         return Result.fail(ResponseCodeEnum.DATABASE_ERROR);
     }
 

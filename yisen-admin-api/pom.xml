@@ -104,11 +104,11 @@
         </dependency>
 
         <!-- Bcrypt -->
-<!--        <dependency>-->
-<!--            <groupId>at.favre.lib</groupId>-->
-<!--            <artifactId>bcrypt</artifactId>-->
-<!--            <version>0.10.2</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
 
         <!-- JSON 处理 -->
         <dependency>
@@ -116,11 +116,18 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.jsonwebtoken</groupId>-->
-<!--            <artifactId>jjwt</artifactId>-->
-<!--            <version>0.13.0</version>-->
-<!--        </dependency>-->
+        <!--ip 地址-->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.13.0</version>
+        </dependency>
 
         <!-- Knife4j 接口文档 -->
         <dependency>
@@ -147,6 +154,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -159,6 +167,7 @@
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
                         </exclude>
                     </excludes>
                 </configuration>
