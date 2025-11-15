@@ -12,14 +12,15 @@
   import { computed } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useAppStore } from '@/stores/app.js';
-  import { useUserStore } from '@/stores/user.js';
+  import { useUserStore } from '@/stores/system/user.js';
   import SidebarItem from './SidebarItem.vue';
+  import { useMenuStore } from '@/stores/index.js';
 
   const route = useRoute();
   const router = useRouter();
   const appStore = useAppStore();
   const userStore = useUserStore();
-
+  const menuStore = useMenuStore();
   // 侧边栏状态
   const sidebarOpened = computed(() => appStore.sidebarOpened);
 
@@ -34,16 +35,21 @@
 
   // 菜单路由列表
   const menuRoutes = computed(() => {
-    const routes = router.getRoutes();
-    return routes.filter((route) => {
+    const userMenuTree = menuStore.userMenuTree;
+    console.log(11, userMenuTree);
+    return userMenuTree.filter((menuItem) => {
+      if (menuItem?.type !== 1) {
+        return false;
+      }
+
       // 过滤隐藏的路由
-      if (route.meta?.hidden) {
+      if (menuItem?.hidden) {
         return false;
       }
 
       // 检查权限
-      if (route.meta?.permission) {
-        return userStore.hasPermission(route.meta.permission);
+      if (menuItem?.permission) {
+        return userStore.hasPermission(menuItem.permission);
       }
 
       return true;
@@ -55,7 +61,7 @@
   .sidebar-container {
     width: 200px;
     height: 100%;
-    background-color: #304156;
+    //background-color: #304156;
     transition: width 0.28s;
     overflow: hidden;
 
@@ -67,27 +73,27 @@
       height: 100%;
     }
 
-    :deep(.el-menu) {
-      border-right: none;
-      background-color: #304156;
-    }
+    //:deep(.el-menu) {
+    //  border-right: none;
+    //  background-color: #304156;
+    //}
 
-    :deep(.el-menu-item),
-    :deep(.el-submenu__title) {
-      color: #bfcbd9;
-
-      &:hover {
-        background-color: #263445 !important;
-      }
-    }
-
-    :deep(.el-menu-item.is-active) {
-      background-color: #409eff !important;
-      color: #fff;
-    }
-
-    :deep(.el-submenu.is-active > .el-submenu__title) {
-      color: #409eff;
-    }
+    //:deep(.el-menu-item),
+    //:deep(.el-submenu__title) {
+    //  color: #bfcbd9;
+    //
+    //  &:hover {
+    //    background-color: #263445 !important;
+    //  }
   }
+
+  //:deep(.el-menu-item.is-active) {
+  //  background-color: #409eff !important;
+  //  color: #fff;
+  //}
+  //
+  //:deep(.el-submenu.is-active > .el-submenu__title) {
+  //  color: #409eff;
+  //}
+  //}
 </style>

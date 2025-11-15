@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getMenuList, getMenuTree, getUserMenuTree, addMenu, getMenuDetail, updateMenu, deleteMenu } from '@/api/menu';
+import { getMenuList, getMenuTree, getUserMenuTree, addMenu, getMenuDetail, updateMenu, deleteMenu } from '@/api/menu.js';
 
 export const useMenuStore = defineStore('menu', {
   state: () => ({
@@ -217,4 +217,3 @@ export const useMenuStore = defineStore('menu', {
     },
   },
 });
-

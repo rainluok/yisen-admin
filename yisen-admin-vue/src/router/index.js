@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/system/user.js';
+import { usePermissionStore } from '@/stores/permission.js';
 import { getToken } from '@/utils/auth';
 import Layout from '@/components/layout/Layout.vue';
 import nProgress from 'nprogress';
@@ -22,6 +23,23 @@ export const constantRoutes = [
     meta: { title: '404', hidden: true },
   },
   {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/error/403.vue'),
+    meta: { title: '403', hidden: true },
+  },
+  {
+    path: '/redirect',
+    component: Layout,
+    meta: { hidden: true },
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -33,34 +51,6 @@ export const constantRoutes = [
         meta: { title: '仪表盘', icon: 'dashboard', affix: true },
       },
     ],
-  },
-];
-
-/**
- * 动态路由
- * 需要根据权限动态加载的路由
- */
-export const asyncRoutes = [
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/user/list',
-    name: 'User',
-    meta: { title: '用户管理', icon: 'user', permission: 'user:view' },
-    children: [
-      {
-        path: 'list',
-        name: 'UserList',
-        component: () => import('@/views/user/user-list.vue'),
-        meta: { title: '用户列表', icon: 'list' },
-      },
-    ],
-  },
-  // 404 页面必须放在最后
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    meta: { hidden: true },
   },
 ];
 
@@ -78,12 +68,13 @@ const router = createRouter({
 });
 
 // 白名单，不需要登录的页面
-const whiteList = ['/login', '/404'];
+const whiteList = ['/login', '/404', '/403'];
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
   nProgress.start();
   // 设置页面标题
+  // eslint-disable-next-line no-undef
   document.title = to.meta.title ? `${to.meta.title} - 益森管理系统` : '益森管理系统';
 
   const token = getToken();
@@ -92,28 +83,73 @@ router.beforeEach(async (to, from, next) => {
     if (to.path === '/login') {
       // 已登录，跳转到首页
       next({ path: '/' });
+      nProgress.done();
     } else {
       const userStore = useUserStore();
+      const permissionStore = usePermissionStore();
 
       // 判断是否已获取用户信息
-      if (userStore.name) {
-        next();
+      if (userStore.username) {
+        // 判断是否已生成路由
+        if (permissionStore.routesGenerated) {
+          next();
+        } else {
+          try {
+            // 生成动态路由
+            const accessRoutes = await permissionStore.generateRoutes(userStore.roles);
+
+            // 动态添加路由
+            accessRoutes.forEach((route) => {
+              router.addRoute(route);
+            });
+
+            // 添加 404 页面（必须在最后）
+            router.addRoute({
+              path: '/:pathMatch(.*)*',
+              redirect: '/404',
+              meta: { hidden: true },
+            });
+
+            // 重新导航到目标路由
+            next({ ...to, replace: true });
+          } catch (error) {
+            console.error('生成路由失败:', error);
+            // 重置状态
+            await userStore.logout();
+            permissionStore.resetRoutes();
+            next(`/login?redirect=${to.path}`);
+            nProgress.done();
+          }
+        }
       } else {
         try {
           // 获取用户信息
           await userStore.getUserInfo();
 
+          // 生成动态路由
+          const accessRoutes = await permissionStore.generateRoutes(userStore.roles);
+
           // 动态添加路由
-          asyncRoutes.forEach((route) => {
+          accessRoutes.forEach((route) => {
             router.addRoute(route);
+          });
+
+          // 添加 404 页面（必须在最后）
+          router.addRoute({
+            path: '/:pathMatch(.*)*',
+            redirect: '/404',
+            meta: { hidden: true },
           });
 
           // 重新导航到目标路由
           next({ ...to, replace: true });
         } catch (error) {
+          console.error('获取用户信息失败:', error);
           // 获取用户信息失败，清除 token 并跳转到登录页
           await userStore.logout();
+          permissionStore.resetRoutes();
           next(`/login?redirect=${to.path}`);
+          nProgress.done();
         }
       }
     }
@@ -123,6 +159,7 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       next(`/login?redirect=${to.path}`);
+      nProgress.done();
     }
   }
 });

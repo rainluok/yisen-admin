@@ -1,12 +1,14 @@
 <template>
   <div class="header-container">
     <div class="header-left">
-      <div class="toggle-btn" @click="toggleSidebar">
-        <el-icon><Fold v-if="sidebarOpened" /><Expand v-else /></el-icon>
-      </div>
       <div class="logo">
         <span>益森管理系统</span>
       </div>
+      <div class="toggle-btn" @click="toggleSidebar">
+        <el-icon><Fold v-if="sidebarOpened" /><Expand v-else /></el-icon>
+      </div>
+
+      <Breadcrumb />
     </div>
 
     <div class="header-right">
@@ -51,7 +53,8 @@
   import { ElMessage, ElMessageBox } from 'element-plus';
   import { ArrowDown, Expand, Fold, FullScreen, Setting, SwitchButton, User } from '@element-plus/icons-vue';
   import { useAppStore } from '@/stores/app.js';
-  import { useUserStore } from '@/stores/user.js';
+  import { useUserStore } from '@/stores/system/user.js';
+  import Breadcrumb from '@components/layout/Breadcrumb.vue';
 
   const router = useRouter();
   const appStore = useAppStore();

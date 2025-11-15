@@ -1,23 +1,23 @@
 <template>
-  <div v-if="!item.meta?.hidden">
+  <div v-if="!item?.hidden">
     <!-- 有子菜单 -->
-    <el-sub-menu v-if="item.children && item.children.length > 0" :index="resolvePath(item.path)">
+    <el-sub-menu v-if="item.children && item.children.filter(child => child.type === 1).length > 0 " :index="resolvePath(item.path)">
       <template #title>
-        <el-icon v-if="item.meta?.icon">
-          <component :is="item.meta.icon" />
+        <el-icon v-if="item?.icon">
+          <component :is="item.icon" />
         </el-icon>
-        <span>{{ item.meta?.title }}</span>
+        <span>{{ item?.menuName }}</span>
       </template>
       <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :base-path="resolvePath(item.path)" />
     </el-sub-menu>
 
     <!-- 无子菜单 -->
     <el-menu-item v-else :index="resolvePath(item.path)">
-      <el-icon v-if="item.meta?.icon">
-        <component :is="item.meta.icon" />
+      <el-icon v-if="item?.icon">
+        <component :is="item.icon" />
       </el-icon>
       <template #title>
-        <span>{{ item.meta?.title }}</span>
+        <span>{{ item?.menuName }}</span>
       </template>
     </el-menu-item>
   </div>

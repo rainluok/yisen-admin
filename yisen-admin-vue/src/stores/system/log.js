@@ -10,7 +10,7 @@ import {
   deleteLoginLog,
   deleteBatchLoginLog,
   clearLoginLogs,
-} from '@/api/log';
+} from '@/api/log.js';
 
 export const useLogStore = defineStore('log', {
   state: () => ({
@@ -271,4 +271,3 @@ export const useLogStore = defineStore('log', {
     },
   },
 });
-

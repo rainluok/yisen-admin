@@ -10,8 +10,8 @@ import {
   deleteUser,
   updateUserStatus,
   resetPassword,
-} from '@/api/user';
-import { clearAuth, setPermissions, setToken, setUserInfo } from '@/utils/auth';
+} from '@/api/user.js';
+import { clearAuth, setPermissions, setToken, setUserInfo } from '@utils/auth.js';
 
 export const useUserStore = defineStore('user', {
   state: () => ({

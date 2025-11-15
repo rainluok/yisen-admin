@@ -4,13 +4,20 @@
     <div class="app-main">
       <Sidebar />
       <div class="content-wrapper">
-        <router-view v-slot="{ Component }">
-          <transition name="fade-transform" mode="out-in">
-            <keep-alive :include="cachedViews">
-              <component :is="Component" />
-            </keep-alive>
-          </transition>
-        </router-view>
+        <div class="main-container">
+          <div class="navbar-container">
+            <TagsView />
+          </div>
+          <div class="view-container">
+            <router-view v-slot="{ Component }">
+              <transition name="fade-transform" mode="out-in">
+                <keep-alive :include="cachedViews">
+                  <component :is="Component" />
+                </keep-alive>
+              </transition>
+            </router-view>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -20,12 +27,14 @@
   import { computed } from 'vue';
   import Header from './Header.vue';
   import Sidebar from './Sidebar.vue';
-  import { useAppStore } from '@/stores/app.js';
+  import Breadcrumb from './Breadcrumb.vue';
+  import TagsView from './TagsView.vue';
+  import { useTagsViewStore } from '@/stores/tagsView';
 
-  const appStore = useAppStore();
+  const tagsViewStore = useTagsViewStore();
 
   // 缓存的页面
-  const cachedViews = computed(() => appStore.cachedViews);
+  const cachedViews = computed(() => tagsViewStore.cachedViews);
 </script>
 
 <style scoped lang="scss">
@@ -44,6 +53,25 @@
   }
 
   .content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .navbar-container {
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  }
+
+  .view-container {
     flex: 1;
     overflow-y: auto;
     background-color: #f2f3f5;

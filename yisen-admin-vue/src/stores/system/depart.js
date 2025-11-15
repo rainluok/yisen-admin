@@ -8,7 +8,7 @@ import {
   updateDepart,
   deleteDepart,
   updateDepartStatus,
-} from '@/api/depart';
+} from '@/api/depart.js';
 
 export const useDepartStore = defineStore('depart', {
   state: () => ({
@@ -228,4 +228,3 @@ export const useDepartStore = defineStore('depart', {
     },
   },
 });
-

@@ -1,12 +1,5 @@
 import { defineStore } from 'pinia';
-import {
-  pageRoleList,
-  addRole,
-  getRoleDetail,
-  updateRole,
-  deleteRole,
-  assignMenus,
-} from '@/api/role';
+import { pageRoleList, addRole, getRoleDetail, updateRole, deleteRole, assignMenus } from '@/api/role.js';
 
 export const useRoleStore = defineStore('role', {
   state: () => ({
@@ -182,4 +175,3 @@ export const useRoleStore = defineStore('role', {
     },
   },
 });
-

@@ -13,7 +13,7 @@ import {
   getDictItemDetail,
   updateDictItem,
   deleteDictItem,
-} from '@/api/dict';
+} from '@/api/dict.js';
 
 export const useDictStore = defineStore('dict', {
   state: () => ({
@@ -355,4 +355,3 @@ export const useDictStore = defineStore('dict', {
     },
   },
 });
-
