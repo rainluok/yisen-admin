@@ -40,8 +40,6 @@ service.interceptors.response.use(
 
     // 如果返回的状态码不是 200，则视为错误
     if (code !== HTTP_STATUS.SUCCESS) {
-      ElMessage.error(message || '请求失败');
-
       // 401: 未授权，token 失效
       if (code === HTTP_STATUS.UNAUTHORIZED) {
         ElMessageBox.confirm('您的登录状态已过期，请重新登录', '提示', {

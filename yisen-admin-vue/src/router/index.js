@@ -42,33 +42,6 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/task',
-    component: Layout,
-    redirect: '/task/list',
-    name: 'Task',
-    meta: { title: '任务管理', icon: 'task' },
-    children: [
-      {
-        path: 'list',
-        name: 'TaskList',
-        component: () => import('@/views/task/task-list.vue'),
-        meta: { title: '任务列表', icon: 'list' },
-      },
-      {
-        path: 'calendar',
-        name: 'TaskCalendar',
-        component: () => import('@/views/task/task-calendar.vue'),
-        meta: { title: '任务日历', icon: 'calendar' },
-      },
-      {
-        path: 'detail/:id',
-        name: 'TaskDetail',
-        component: () => import('@/views/task/task-detail.vue'),
-        meta: { title: '任务详情', hidden: true },
-      },
-    ],
-  },
-  {
     path: '/user',
     component: Layout,
     redirect: '/user/list',

@@ -7,6 +7,7 @@ import router from './router';
 import { setupPlugins } from './plugins';
 import { setupDirectives } from './directives';
 import { printEnvInfo } from './utils/env';
+import 'reset-css';
 
 // 打印环境信息
 printEnvInfo();

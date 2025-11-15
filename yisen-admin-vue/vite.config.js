@@ -22,13 +22,10 @@ export default defineConfig(({ mode }) => {
       AutoImport({
         resolvers: [ElementPlusResolver()],
         // 可选补充：自动导入 Vue 相关API
-        imports: ['vue', 'vue-router', 'pinia'],
-        dts: 'src/auto-imports.d.ts',
-      }),
+        imports: ['vue', 'vue-router', 'pinia'], }),
       // 自动导入 Element Plus 组件
       Components({
         resolvers: [ElementPlusResolver()],
-        dts: 'src/components.d.ts',
       }),
     ],
     resolve: {
