@@ -117,7 +117,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict>
         SysDict dict = new SysDict();
         BeanUtils.copyProperties(dto, dict);
         dict.setIsDeleted(0);
-        dict.setCreateTime(new Date());
 
         this.save(dict);
         return dict.getId();
@@ -152,7 +151,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict>
         if (dto.getStatus() != null) {
             dict.setStatus(dto.getStatus());
         }
-        dict.setUpdateTime(new Date());
 
         this.updateById(dict);
     }
@@ -168,7 +166,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict>
 
         // 逻辑删除
         dict.setIsDeleted(1);
-        dict.setUpdateTime(new Date());
         this.updateById(dict);
     }
 

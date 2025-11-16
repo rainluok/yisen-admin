@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -64,7 +65,7 @@ public class SysUser {
     /**
      * 最后登录时间
      */
-    private Date loginTime;
+    private LocalDate loginTime;
 
     /**
      * 用户状态 0-禁用 1-启用
@@ -84,7 +85,7 @@ public class SysUser {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDate createTime;
 
     /**
      * 更新人
@@ -94,5 +95,5 @@ public class SysUser {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDate updateTime;
 }

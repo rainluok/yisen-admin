@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -54,7 +55,7 @@ public class SysRole {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDate createTime;
 
     /**
      * 更新人
@@ -64,5 +65,5 @@ public class SysRole {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDate updateTime;
 }

@@ -98,8 +98,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
         SysMenu menu = new SysMenu();
         BeanUtils.copyProperties(dto, menu);
         menu.setIsDeleted(0);
-        menu.setCreateTime(new Date());
-        menu.setUpdateTime(new Date());
 
         this.save(menu);
 
@@ -167,7 +165,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
         if (dto.getStatus() != null) {
             menu.setStatus(dto.getStatus());
         }
-        menu.setUpdateTime(new Date());
 
         this.updateById(menu);
 
@@ -200,7 +197,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
 
         // 逻辑删除
         menu.setIsDeleted(1);
-        menu.setUpdateTime(new Date());
         this.updateById(menu);
 
         log.info("删除菜单成功，菜单ID：{}", id);

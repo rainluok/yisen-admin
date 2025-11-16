@@ -78,8 +78,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
         role.setDescription(dto.getDescription());
         role.setStatus(dto.getStatus());
         role.setIsDeleted(0);
-        role.setCreateTime(new Date());
-        role.setUpdateTime(new Date());
 
         this.save(role);
 
@@ -132,7 +130,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
         if (dto.getStatus() != null) {
             role.setStatus(dto.getStatus());
         }
-        role.setUpdateTime(new Date());
 
         this.updateById(role);
 
@@ -156,7 +153,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
 
         // 逻辑删除
         role.setIsDeleted(1);
-        role.setUpdateTime(new Date());
         this.updateById(role);
 
         // 删除角色菜单关系

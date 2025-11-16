@@ -1,8 +1,10 @@
 package com.yisen.module.system.log.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -73,7 +75,8 @@ public class LoginLogVO {
      * 登录时间
      */
     @Schema(description = "登录时间")
-    private Date loginTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDate loginTime;
 
 }
 

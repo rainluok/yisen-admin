@@ -143,7 +143,6 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
         SysDepart depart = new SysDepart();
         BeanUtils.copyProperties(dto, depart);
         depart.setIsDeleted(0);
-        depart.setCreateTime(new Date());
 
         this.save(depart);
         return depart.getId();
@@ -184,7 +183,6 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 
         // 更新部门
         BeanUtils.copyProperties(dto, depart);
-        depart.setUpdateTime(new Date());
 
         this.updateById(depart);
     }
@@ -206,7 +204,6 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 
         // 逻辑删除
         depart.setIsDeleted(1);
-        depart.setUpdateTime(new Date());
         this.updateById(depart);
     }
 
@@ -221,7 +218,6 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 
         // 更新状态
         depart.setStatus(status);
-        depart.setUpdateTime(new Date());
         this.updateById(depart);
     }
 

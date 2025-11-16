@@ -89,8 +89,8 @@ public class OperationLogAspect {
             SysLog sysLog = new SysLog();
 
             // 基本信息
-            sysLog.setUserId(userUtil.getCurrentUserId());
-            sysLog.setUsername(userUtil.getCurrentUsername());
+            sysLog.setUserId(userUtil.getUserId());
+            sysLog.setUsername(userUtil.getUsername());
             sysLog.setOperation(operationLog.value());
             sysLog.setOperationType(operationLog.type().getCode());  // 获取枚举的 code 值
             sysLog.setBizType(operationLog.bizType().getCode());      // 获取枚举的 code 值
@@ -121,9 +121,7 @@ public class OperationLogAspect {
             if (startTime != null) {
                 sysLog.setSpendTime((int) (System.currentTimeMillis() - startTime));
             }
-
-            sysLog.setCreateTime(new Date());
-
+            
             // 保存日志
             sysLogService.save(sysLog);
 

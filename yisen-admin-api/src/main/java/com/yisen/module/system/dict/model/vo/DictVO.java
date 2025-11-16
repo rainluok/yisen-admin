@@ -1,8 +1,11 @@
 package com.yisen.module.system.dict.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -55,7 +58,7 @@ public class DictVO {
      * 创建时间
      */
     @Schema(description = "创建时间")
-    private Date createTime;
+    private LocalDate createTime;
 
     /**
      * 更新人
@@ -67,7 +70,8 @@ public class DictVO {
      * 更新时间
      */
     @Schema(description = "更新时间")
-    private Date updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDate updateTime;
 
 }
 

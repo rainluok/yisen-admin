@@ -1,10 +1,11 @@
 package com.yisen.module.system.user.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -12,13 +13,13 @@ import java.util.Set;
  * @author rainluo
  * @version 1.0
  * @description
- * @date 2025/11/14 10:30
+ * @date 2025/11/14 10:47
  */
 @Data
-public class UserInfoVO implements Serializable {
+public class LoginUserVO {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+    @Schema(description = "Token")
+    private String token;
 
     @Schema(description = "主键id")
     private String id;
@@ -45,7 +46,8 @@ public class UserInfoVO implements Serializable {
     private String loginIp;
 
     @Schema(description = "最后登录时间")
-    private Date loginTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDate loginTime;
 
     @Schema(description = "用户状态 0-禁用 1-启用")
     private Integer status;
@@ -55,4 +57,6 @@ public class UserInfoVO implements Serializable {
 
     @Schema(description = "权限")
     private Set<String> permissions;
+
+    public LoginUserVO(){}
 }
