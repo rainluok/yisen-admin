@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * 敏感数据脱敏切面
@@ -40,7 +40,9 @@ public class SensitiveDataAspect {
 
         try {
             // 对返回值进行脱敏处理
-            maskSensitiveData(result);
+            // 创建基于引用相等的 visited 集合
+            Set<Object> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+            maskSensitiveData(result, visited);
         } catch (Exception e) {
             log.error("敏感数据脱敏失败", e);
         }
@@ -51,15 +53,20 @@ public class SensitiveDataAspect {
     /**
      * 递归处理敏感数据
      */
-    private void maskSensitiveData(Object obj) throws IllegalAccessException {
+    private void maskSensitiveData(Object obj, Set<Object> visited) throws IllegalAccessException {
         if (obj == null) {
             return;
         }
 
+        // 🔒 防循环引用：如果已处理过，立即退出
+        if (!visited.add(obj)) {
+            return; // 这是防止无限递归的核心！
+        }
+
         Class<?> clazz = obj.getClass();
 
-        // 处理基本类型、包装类、String 等
-        if (clazz.isPrimitive() || clazz.getName().startsWith("java.lang")) {
+        // 基本类型、String、LocalDateTime 等无需递归
+        if (clazz.isPrimitive() || clazz.getName().startsWith("java.lang") || clazz.getName().startsWith("java.time")) {
             return;
         }
 
@@ -67,7 +74,7 @@ public class SensitiveDataAspect {
         if (obj instanceof Result) {
             Result<?> resultObj = (Result<?>) obj;
             if (resultObj.getData() != null) {
-                maskSensitiveData(resultObj.getData());
+                maskSensitiveData(resultObj.getData(), visited);
             }
             return;
         }
@@ -76,30 +83,35 @@ public class SensitiveDataAspect {
         if (obj instanceof Collection) {
             Collection<?> collection = (Collection<?>) obj;
             for (Object item : collection) {
-                maskSensitiveData(item);
+                maskSensitiveData(item, visited);
             }
             return;
         }
 
-        // 处理普通对象
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
+        if (obj instanceof Map) {
+            // ... 递归 key 和 value
+            return;
+        }
+        if (clazz.isArray()) {
+            // ... 递归每个数组元素
+            return;
+        }
+
+        // 👇 处理普通对象字段
+        for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
 
-            // 检查字段是否有 @Sensitive 注解
+            Object value = field.get(obj);
+            if (value == null) continue;
+
             Sensitive sensitive = field.getAnnotation(Sensitive.class);
-            if (sensitive != null) {
-                Object value = field.get(obj);
-                if (value instanceof String) {
-                    String maskedValue = maskValue((String) value, sensitive.type());
-                    field.set(obj, maskedValue);
-                }
+            if (sensitive != null && value instanceof String) {
+                // 脱敏字符串
+                field.set(obj, maskValue((String) value, sensitive.type()));
             } else {
-                // 递归处理嵌套对象
-                Object fieldValue = field.get(obj);
-                if (fieldValue != null) {
-                    maskSensitiveData(fieldValue);
-                }
+                // 即使没注解，也要递归进去（因为 value 可能是对象）
+                // ⚠️ 下一层递归开头会检查 visited，防止循环！
+                maskSensitiveData(value, visited);
             }
         }
     }
