@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yisen.common.constant.CacheKey;
 import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
 import com.yisen.common.model.PageRequest;
 import com.yisen.common.model.PageResult;
+import com.yisen.common.service.RedisService;
 import com.yisen.common.util.JwtUtil;
 import com.yisen.common.util.PasswordUtil;
 import com.yisen.common.util.UserUtil;
@@ -17,9 +19,9 @@ import com.yisen.module.system.user.mapper.SysUserRoleMapper;
 import com.yisen.module.system.user.model.dto.*;
 import com.yisen.module.system.user.model.po.SysUser;
 import com.yisen.module.system.user.model.po.SysUserRole;
-import com.yisen.module.system.user.model.vo.LoginInfoVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.model.vo.UserDetailVO;
-import com.yisen.module.system.user.model.vo.UserInfoVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +51,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     private final SysRoleMapper sysRoleMapper;
     private final UserUtil userUtil;
     private final JwtUtil jwtUtil;
+    private final RedisService redisService;
 
     @Override
-    public LoginInfoVO login(LoginDTO loginDTO) {
+    public LoginUserVO login(LoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
@@ -73,20 +76,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
             throw new BusinessException(ResponseCodeEnum.USERNAME_PASSWORD_ERROR);
         }
 
-        UserInfoVO userInfoVO = new UserInfoVO();
-        BeanUtils.copyProperties(user, userInfoVO);
+        LoginUserVO loginUser = new LoginUserVO();
+        BeanUtils.copyProperties(user, loginUser);
 
         // 查询用户的角色和权限
         Set<String> roles = baseMapper.selectRoleCodesByUserId(user.getId());
         Set<String> permissions = baseMapper.selectPermissionsByUserId(user.getId());
 
-        userInfoVO.setRoles(roles);
-        userInfoVO.setPermissions(permissions);
+        loginUser.setRoles(roles);
+        loginUser.setPermissions(permissions);
 
-        return LoginInfoVO.builder()
-                .token(jwtUtil.generateToken(userInfoVO))
-                .userInfo(userInfoVO)
-                .build();
+        loginUser.setToken(jwtUtil.generateToken(loginUser));
+        return loginUser;
+    }
+
+    @Override
+    public void logout() {
+        redisService.delete(CacheKey.AUTH_TOKEN + userUtil.getUserId());
     }
 
     @Override
@@ -185,7 +191,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         if (StringUtils.isNotBlank(dto.getEmail())) {
             user.setEmail(dto.getEmail());
         }
-        user.setUpdateTime(new Date());
 
         this.updateById(user);
 
@@ -222,7 +227,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
         // 逻辑删除
         user.setIsDeleted(1);
-        user.setUpdateTime(new Date());
         this.updateById(user);
 
         // 删除用户角色关系
@@ -254,7 +258,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         }
 
         user.setStatus(status);
-        user.setUpdateTime(new Date());
         this.updateById(user);
 
         log.info("修改用户状态成功，用户ID：{}，状态：{}", id, status == 1 ? "启用" : "禁用");
@@ -280,7 +283,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         // 加密新密码
         String encodedPassword = PasswordUtil.encode(dto.getNewPassword());
         user.setPassword(encodedPassword);
-        user.setUpdateTime(new Date());
         this.updateById(user);
 
         log.info("重置用户密码成功，用户ID：{}", dto.getId());

@@ -2,8 +2,11 @@ package com.yisen.common.util;
 
 import com.yisen.common.constant.CacheKey;
 import com.yisen.common.service.RedisService;
-import com.yisen.module.system.user.model.vo.UserInfoVO;
-import io.jsonwebtoken.*;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
@@ -50,24 +53,25 @@ public class JwtUtil {
     /**
      * 生成用户Token并缓存到Redis
      *
-     * @param userInfoVO 用户信息
+     * @param loginUser 用户信息
      * @return token
      */
-    public String generateToken(UserInfoVO userInfoVO) {
+    public String generateToken(LoginUserVO loginUser) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         Date expire = new Date(nowMillis + expireTimeSeconds * 1000);
-
+        String id = loginUser.getId();
         // 建议仅存必要敏感字段，如用户ID、用户名
         String token = Jwts
                 .builder()
-                .subject(userInfoVO.getId() == null ? "" : userInfoVO.getId())
-                .claim("username", userInfoVO.getUsername())
+                .subject(id == null ? "" : id)
+                .claim("id", id)
+                .claim("username", loginUser.getUsername())
                 .issuedAt(now).expiration(expire)
                 .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
 
-        redisService.set(CacheKey.AUTH_TOKEN + token, userInfoVO, expireTimeSeconds);
+        redisService.set(CacheKey.AUTH_TOKEN + id, loginUser, expireTimeSeconds);
 
         return token;
     }
@@ -76,14 +80,14 @@ public class JwtUtil {
      * 校验并解析Token
      *
      * @param token token字符串
-     * @return Jws<Claims>
+     * @return Claims
      * @throws JwtException 校验失败抛出的异常
      */
-    public Jws<Claims> parseToken(String token) throws JwtException {
+    public Claims parseToken(String token) throws JwtException {
         return Jwts.parser()
                 .setSigningKey(KEY)
                 .build()
-                .parseSignedClaims(token);
+                .parseSignedClaims(token).getPayload();
     }
 
     /**
@@ -113,12 +117,7 @@ public class JwtUtil {
      */
     public boolean validateToken(String token) {
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(KEY)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-
+            Claims claims = parseToken(token);
             if (claims == null) {
                 return false;
             }
@@ -151,7 +150,12 @@ public class JwtUtil {
      * @param token token字符串
      * @return 用户信息
      */
-    public UserInfoVO getUserInfoFromToken(String token) {
-        return (UserInfoVO) redisService.get(CacheKey.AUTH_TOKEN + token);
+    public LoginUserVO getUserInfoFromToken(String token) {
+        Claims claims = parseToken(token);
+        if (claims == null) {
+            return null;
+        }
+        String id = claims.get("id", String.class);
+        return (LoginUserVO) redisService.get(CacheKey.AUTH_TOKEN + id);
     }
 }

@@ -23,7 +23,7 @@ public class MybatisPlusConfig implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        String currentUserId = userUtil.getCurrentUserId();
+        String currentUserId = userUtil.getUserId();
         // 填充ID（如果字段名为"id"，且为null）
         if (metaObject.hasSetter("id") && getFieldValByName("id", metaObject) == null) {
             setFieldValByName("id", UUIDUtil.generateUUID(), metaObject);
@@ -54,7 +54,7 @@ public class MybatisPlusConfig implements MetaObjectHandler {
         }
         // 修改人
         if (metaObject.hasSetter("updateBy")) {
-            setFieldValByName("updateBy", userUtil.getCurrentUserId(), metaObject);
+            setFieldValByName("updateBy", userUtil.getUserId(), metaObject);
         }
     }
 }

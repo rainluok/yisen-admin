@@ -31,7 +31,7 @@ public class OnlineUserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
-            String userId = userUtil.getCurrentUserId();
+            String userId = userUtil.getUserId();
             if (userId != null) {
                 // 更新在线状态
                 String onlineKey = ONLINE_USER_KEY_PREFIX + userId;

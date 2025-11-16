@@ -8,8 +8,8 @@ import com.yisen.common.result.Result;
 import com.yisen.common.util.UserUtil;
 import com.yisen.module.system.user.model.dto.LoginDTO;
 import com.yisen.module.system.user.model.dto.UserResetPasswordDTO;
-import com.yisen.module.system.user.model.vo.LoginInfoVO;
-import com.yisen.module.system.user.model.vo.UserInfoVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,8 +40,8 @@ public class LoginController {
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "用户登录，返回token和用户信息")
-    public Result<LoginInfoVO> login(@RequestBody @Valid LoginDTO dto) {
-        LoginInfoVO loginInfo = sysUserService.login(dto);
+    public Result<LoginUserVO> login(@RequestBody @Valid LoginDTO dto) {
+        LoginUserVO loginInfo = sysUserService.login(dto);
         return Result.success("登录成功", loginInfo);
     }
 
@@ -50,8 +50,8 @@ public class LoginController {
      */
     @GetMapping("/userInfo")
     @Operation(summary = "获取当前用户信息", description = "获取当前登录用户的详细信息")
-    public Result<UserInfoVO> getUserInfo() {
-        UserInfoVO userInfo = userUtil.getCurrentUser();
+    public Result<LoginUserVO> getUserInfo() {
+        LoginUserVO userInfo = userUtil.getUser();
         return Result.success(userInfo);
     }
 
@@ -61,8 +61,7 @@ public class LoginController {
     @PostMapping("/logout")
     @Operation(summary = "用户登出", description = "用户登出，清除登录状态")
     public Result<Void> logout() {
-        log.info("用户登出: {}", userUtil.getCurrentUser().getUsername());
-        // TODO: 可以在这里添加清除Redis缓存等逻辑
+        sysUserService.logout();
         return Result.success("登出成功");
     }
 

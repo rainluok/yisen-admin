@@ -5,7 +5,7 @@ import com.yisen.common.model.PageRequest;
 import com.yisen.common.model.PageResult;
 import com.yisen.module.system.user.model.dto.*;
 import com.yisen.module.system.user.model.po.SysUser;
-import com.yisen.module.system.user.model.vo.LoginInfoVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.model.vo.UserDetailVO;
 
 /**
@@ -22,7 +22,12 @@ public interface SysUserService extends IService<SysUser> {
      * @param dto 登录DTO
      * @return 登录信息
      */
-    LoginInfoVO login(LoginDTO dto);
+    LoginUserVO login(LoginDTO dto);
+
+    /**
+     * 登出
+     */
+    void logout();
 
     /**
      * 分页查询用户列表
@@ -76,5 +81,5 @@ public interface SysUserService extends IService<SysUser> {
      * @param dto 重置密码DTO
      */
     void resetPassword(UserResetPasswordDTO dto);
-
+    
 }

@@ -42,7 +42,7 @@ public class PermissionAspect {
         String[] requiredRoles = requireRole.value();
         boolean requireAll = requireRole.requireAll();
 
-        Set<String> userRoles = userUtil.getCurrentUserRoles();
+        Set<String> userRoles = userUtil.getUserRoles();
 
         if (requireAll) {
             // 需要拥有所有角色

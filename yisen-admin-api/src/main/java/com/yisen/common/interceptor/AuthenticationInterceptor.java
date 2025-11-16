@@ -5,7 +5,7 @@ import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
 import com.yisen.common.util.JwtUtil;
 import com.yisen.common.util.UserUtil;
-import com.yisen.module.system.user.model.vo.UserInfoVO;
+import com.yisen.module.system.user.model.vo.LoginUserVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -71,14 +71,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         // 解析用户信息并注入上下文
-        UserInfoVO userInfo = jwtUtil.getUserInfoFromToken(token);
+        LoginUserVO userInfo = jwtUtil.getUserInfoFromToken(token);
         if (userInfo == null) {
             log.warn("Token 中无用户信息: {}", request.getRequestURI());
             throw new BusinessException(ResponseCodeEnum.TOKEN_INVALID);
         }
 
         // 将用户信息注入到 ThreadLocal
-        userUtil.setUserInfo(userInfo);
+        userUtil.setUser(userInfo);
 
         log.debug("认证成功，用户: {}, URI: {}", userInfo.getUsername(), request.getRequestURI());
         return true;
@@ -88,7 +88,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) {
         // 清理 ThreadLocal，避免内存泄漏
-        userUtil.clearUserInfo();
+        userUtil.clear();
     }
 }
 
