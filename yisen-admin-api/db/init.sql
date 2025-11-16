@@ -6,27 +6,27 @@ DROP TABLE IF EXISTS `sys_user`;
 
 CREATE TABLE `sys_user`
 (
-  `id`          varchar(32) NOT NULL COMMENT '主键id',
-  `username`    varchar(32) NOT NULL COMMENT '用户名',
-  `password`    varchar(64) NOT NULL COMMENT '密码',
-  `real_name`   varchar(32)          DEFAULT NULL COMMENT '真实姓名',
-  `gender`      tinyint(1)           DEFAULT NULL COMMENT '性别 0-未知 1-男 2-女',
-  `avatar`      varchar(255)         DEFAULT NULL COMMENT '头像',
-  `email`       varchar(32) NOT NULL NULL COMMENT '邮箱',
-  `depart_id`   varchar(32)          DEFAULT NULL COMMENT '部门ID',
-  `login_ip`    varchar(45)          DEFAULT NULL COMMENT '最后登录IP',
-  `login_time`  datetime             DEFAULT NULL COMMENT '最后登录时间',
-  `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '用户状态 0-禁用 1-启用',
-  `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
-  `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uniq_username` (`username`),
-  UNIQUE KEY `uniq_email` (`email`),
-  KEY `idx_status` (`status`),
-  KEY `idx_is_deleted` (`is_deleted`)
+    `id`          varchar(32) NOT NULL COMMENT '主键id',
+    `username`    varchar(32) NOT NULL COMMENT '用户名',
+    `password`    varchar(64) NOT NULL COMMENT '密码',
+    `real_name`   varchar(32)          DEFAULT NULL COMMENT '真实姓名',
+    `gender`      tinyint(1)           DEFAULT NULL COMMENT '性别 0-未知 1-男 2-女',
+    `avatar`      varchar(255)         DEFAULT NULL COMMENT '头像',
+    `email`       varchar(32) NOT NULL NULL COMMENT '邮箱',
+    `depart_id`   varchar(32)          DEFAULT NULL COMMENT '部门ID',
+    `login_ip`    varchar(45)          DEFAULT NULL COMMENT '最后登录IP',
+    `login_time`  datetime             DEFAULT NULL COMMENT '最后登录时间',
+    `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '用户状态 0-禁用 1-启用',
+    `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uniq_username` (`username`),
+    UNIQUE KEY `uniq_email` (`email`),
+    KEY `idx_status` (`status`),
+    KEY `idx_is_deleted` (`is_deleted`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统用户表'
@@ -37,24 +37,24 @@ DROP TABLE IF EXISTS `sys_depart`;
 
 CREATE TABLE `sys_depart`
 (
-  `id`          varchar(32) NOT NULL COMMENT '主键id',
-  `parent_id`   varchar(32)          DEFAULT NULL COMMENT '父部门ID',
-  `depart_name` varchar(64) NOT NULL COMMENT '部门名称',
-  `depart_code` varchar(32) NOT NULL COMMENT '部门编码',
-  `leader`      varchar(32)          DEFAULT NULL COMMENT '负责人',
-  `phone`       varchar(20)          DEFAULT NULL COMMENT '部门电话',
-  `email`       varchar(64)          DEFAULT NULL COMMENT '部门邮箱',
-  `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `sort`        int(11)              DEFAULT 0 COMMENT '排序',
-  `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
-  `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `idx_parent_id` (`parent_id`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`          varchar(32) NOT NULL COMMENT '主键id',
+    `parent_id`   varchar(32)          DEFAULT NULL COMMENT '父部门ID',
+    `depart_name` varchar(64) NOT NULL COMMENT '部门名称',
+    `depart_code` varchar(32) NOT NULL COMMENT '部门编码',
+    `leader`      varchar(32)          DEFAULT NULL COMMENT '负责人',
+    `phone`       varchar(20)          DEFAULT NULL COMMENT '部门电话',
+    `email`       varchar(64)          DEFAULT NULL COMMENT '部门邮箱',
+    `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `sort`        int(11)              DEFAULT 0 COMMENT '排序',
+    `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_parent_id` (`parent_id`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统部门表'
@@ -65,13 +65,13 @@ DROP TABLE IF EXISTS `sys_user_depart`;
 
 CREATE TABLE `sys_user_depart`
 (
-  `id`        varchar(32) NOT NULL COMMENT '主键id',
-  `user_id`   varchar(32) NOT NULL COMMENT '用户ID',
-  `depart_id` varchar(32) NOT NULL COMMENT '部门ID',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_user_depart` (`user_id`, `depart_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_depart_id` (`depart_id`)
+    `id`        varchar(32) NOT NULL COMMENT '主键id',
+    `user_id`   varchar(32) NOT NULL COMMENT '用户ID',
+    `depart_id` varchar(32) NOT NULL COMMENT '部门ID',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_user_depart` (`user_id`, `depart_id`),
+    KEY `idx_user_id` (`user_id`),
+    KEY `idx_depart_id` (`depart_id`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '用户部门关联表';
@@ -81,20 +81,20 @@ DROP TABLE IF EXISTS `sys_role`;
 
 CREATE TABLE `sys_role`
 (
-  `id`          varchar(32) NOT NULL COMMENT '主键id',
-  `role_name`   varchar(32) NOT NULL COMMENT '角色名称',
-  `role_code`   varchar(32) NOT NULL COMMENT '角色编码',
-  `description` varchar(255)         DEFAULT NULL COMMENT '描述',
-  `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_role_code` (`role_code`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`          varchar(32) NOT NULL COMMENT '主键id',
+    `role_name`   varchar(32) NOT NULL COMMENT '角色名称',
+    `role_code`   varchar(32) NOT NULL COMMENT '角色编码',
+    `description` varchar(255)         DEFAULT NULL COMMENT '描述',
+    `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_role_code` (`role_code`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统角色表'
@@ -105,13 +105,13 @@ DROP TABLE IF EXISTS `sys_user_role`;
 
 CREATE TABLE `sys_user_role`
 (
-  `id`      varchar(32) NOT NULL COMMENT '主键id',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_user_role` (`user_id`, `role_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_role_id` (`role_id`)
+    `id`      varchar(32) NOT NULL COMMENT '主键id',
+    `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+    `role_id` varchar(32) NOT NULL COMMENT '角色ID',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_user_role` (`user_id`, `role_id`),
+    KEY `idx_user_id` (`user_id`),
+    KEY `idx_role_id` (`role_id`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '用户角色关系表';
@@ -121,28 +121,28 @@ DROP TABLE IF EXISTS `sys_menu`;
 
 CREATE TABLE `sys_menu`
 (
-  `id`          varchar(32) NOT NULL COMMENT '主键id',
-  `parent_id`   varchar(32)          DEFAULT 0 NULL COMMENT '父菜单ID',
-  `menu_name`   varchar(64) NOT NULL COMMENT '菜单名称',
-  `menu_code`   varchar(64) NOT NULL COMMENT '菜单编码',
-  `type`        tinyint(1)  NOT NULL DEFAULT 1 COMMENT '类型 1-菜单 2-按钮',
-  `path`        varchar(255)         DEFAULT NULL COMMENT '路由路径',
-  `component`   varchar(255)         DEFAULT NULL COMMENT '组件路径',
-  `permission`  varchar(64)          DEFAULT NULL COMMENT '权限标识',
-  `icon`        varchar(64)          DEFAULT NULL COMMENT '图标',
-  `hidden`      tinyint(1)  NOT NULL DEFAULT 0 COMMENT '是否隐藏 0-显示 1-隐藏',
-  `layout`      varchar(16)          DEFAULT 'default' COMMENT '布局类型 default-默认 blank-空白',
-  `sort`        int(11)              DEFAULT 0 COMMENT '排序',
-  `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `idx_parent_id` (`parent_id`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`          varchar(32) NOT NULL COMMENT '主键id',
+    `parent_id`   varchar(32)          DEFAULT 0 NULL COMMENT '父菜单ID',
+    `menu_name`   varchar(64) NOT NULL COMMENT '菜单名称',
+    `menu_code`   varchar(64) NOT NULL COMMENT '菜单编码',
+    `type`        tinyint(1)  NOT NULL DEFAULT 1 COMMENT '类型 1-菜单 2-按钮',
+    `path`        varchar(255)         DEFAULT NULL COMMENT '路由路径',
+    `component`   varchar(255)         DEFAULT NULL COMMENT '组件路径',
+    `permission`  varchar(64)          DEFAULT NULL COMMENT '权限标识',
+    `icon`        varchar(64)          DEFAULT NULL COMMENT '图标',
+    `hidden`      tinyint(1)  NOT NULL DEFAULT 0 COMMENT '是否隐藏 0-显示 1-隐藏',
+    `layout`      varchar(16)          DEFAULT 'default' COMMENT '布局类型 default-默认 blank-空白',
+    `sort`        int(11)              DEFAULT 0 COMMENT '排序',
+    `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_parent_id` (`parent_id`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统菜单表';
@@ -152,13 +152,13 @@ DROP TABLE IF EXISTS `sys_role_menu`;
 
 CREATE TABLE `sys_role_menu`
 (
-  `id`      varchar(32) NOT NULL COMMENT '主键id',
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
-  `menu_id` varchar(32) NOT NULL COMMENT '菜单ID',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_role_menu` (`role_id`, `menu_id`),
-  KEY `idx_role_id` (`role_id`),
-  KEY `idx_menu_id` (`menu_id`)
+    `id`      varchar(32) NOT NULL COMMENT '主键id',
+    `role_id` varchar(32) NOT NULL COMMENT '角色ID',
+    `menu_id` varchar(32) NOT NULL COMMENT '菜单ID',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_role_menu` (`role_id`, `menu_id`),
+    KEY `idx_role_id` (`role_id`),
+    KEY `idx_menu_id` (`menu_id`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '角色菜单关系表';
@@ -168,20 +168,20 @@ DROP TABLE IF EXISTS `sys_dict`;
 
 CREATE TABLE `sys_dict`
 (
-  `id`          varchar(32) NOT NULL COMMENT '主键id',
-  `dict_name`   varchar(64) NOT NULL COMMENT '字典名称',
-  `dict_code`   varchar(64) NOT NULL COMMENT '字典编码',
-  `description` varchar(255)         DEFAULT NULL COMMENT '描述',
-  `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_dict_code` (`dict_code`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`          varchar(32) NOT NULL COMMENT '主键id',
+    `dict_name`   varchar(64) NOT NULL COMMENT '字典名称',
+    `dict_code`   varchar(64) NOT NULL COMMENT '字典编码',
+    `description` varchar(255)         DEFAULT NULL COMMENT '描述',
+    `status`      tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `is_deleted`  tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_by`   varchar(32)          DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)          DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_dict_code` (`dict_code`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '数据字典';
@@ -191,17 +191,17 @@ DROP TABLE IF EXISTS `sys_dict_item`;
 
 CREATE TABLE `sys_dict_item`
 (
-  `id`         varchar(32) NOT NULL COMMENT '主键id',
-  `dict_id`    varchar(32) NOT NULL COMMENT '字典ID',
-  `item_name`  varchar(64) NOT NULL COMMENT '字典项名称',
-  `item_value` varchar(64) NOT NULL COMMENT '字典项值',
-  `sort`       int(11)              DEFAULT 0 COMMENT '排序',
-  `status`     tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `is_deleted` tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  PRIMARY KEY (`id`),
-  KEY `idx_dict_id` (`dict_id`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`         varchar(32) NOT NULL COMMENT '主键id',
+    `dict_id`    varchar(32) NOT NULL COMMENT '字典ID',
+    `item_name`  varchar(64) NOT NULL COMMENT '字典项名称',
+    `item_value` varchar(64) NOT NULL COMMENT '字典项值',
+    `sort`       int(11)              DEFAULT 0 COMMENT '排序',
+    `status`     tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `is_deleted` tinyint(1)  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    PRIMARY KEY (`id`),
+    KEY `idx_dict_id` (`dict_id`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '数据字典项';
@@ -211,20 +211,20 @@ DROP TABLE IF EXISTS `sys_login_log`;
 
 CREATE TABLE `sys_login_log`
 (
-  `id`          VARCHAR(32) NOT NULL COMMENT '主键ID',
-  `user_id`     VARCHAR(32)          DEFAULT NULL COMMENT '用户ID',
-  `username`    VARCHAR(64)          DEFAULT NULL COMMENT '用户名（登录账号）',
-  `status`      TINYINT(1)  NOT NULL DEFAULT 1 COMMENT '状态：0-失败，1-成功',
-  `ip`          VARCHAR(45)          DEFAULT NULL COMMENT '登录IP',
-  `ip_location` VARCHAR(100)         DEFAULT NULL COMMENT 'IP归属地（可选）',
-  `os`          VARCHAR(64)          DEFAULT NULL COMMENT '操作系统',
-  `browser`     VARCHAR(64)          DEFAULT NULL COMMENT '浏览器',
-  `msg`         VARCHAR(255)         DEFAULT NULL COMMENT '描述信息（如：密码错误、验证码不正确）',
-  `login_time`  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登录时间',
-  PRIMARY KEY (`id`),
-  INDEX `idx_username` (`username`),
-  INDEX `idx_login_time` (`login_time`),
-  INDEX `idx_status` (`status`)
+    `id`          VARCHAR(32) NOT NULL COMMENT '主键ID',
+    `user_id`     VARCHAR(32)          DEFAULT NULL COMMENT '用户ID',
+    `username`    VARCHAR(64)          DEFAULT NULL COMMENT '用户名（登录账号）',
+    `status`      TINYINT(1)  NOT NULL DEFAULT 1 COMMENT '状态：0-失败，1-成功',
+    `ip`          VARCHAR(45)          DEFAULT NULL COMMENT '登录IP',
+    `ip_location` VARCHAR(100)         DEFAULT NULL COMMENT 'IP归属地（可选）',
+    `os`          VARCHAR(64)          DEFAULT NULL COMMENT '操作系统',
+    `browser`     VARCHAR(64)          DEFAULT NULL COMMENT '浏览器',
+    `msg`         VARCHAR(255)         DEFAULT NULL COMMENT '描述信息（如：密码错误、验证码不正确）',
+    `login_time`  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登录时间',
+    PRIMARY KEY (`id`),
+    INDEX `idx_username` (`username`),
+    INDEX `idx_login_time` (`login_time`),
+    INDEX `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '登录日志';
@@ -234,24 +234,24 @@ DROP TABLE IF EXISTS `sys_log`;
 
 CREATE TABLE `sys_log`
 (
-  `id`             varchar(32) NOT NULL COMMENT '主键id',
-  `user_id`        varchar(32)          DEFAULT NULL COMMENT '用户ID',
-  `username`       varchar(32)          DEFAULT NULL COMMENT '用户名',
-  `operation`      varchar(255)         DEFAULT NULL COMMENT '操作内容',
-  `operation_type` tinyint(1)  NOT NULL DEFAULT 1 COMMENT '操作类型 1-新增 2-修改 3-删除 4-查询',
-  `biz_type`       VARCHAR(64)          DEFAULT NULL COMMENT '业务类型（如：user, order）',
-  `biz_id`         VARCHAR(32)          DEFAULT NULL COMMENT '业务ID（关联具体数据）',
-  `request_url`    varchar(255)         DEFAULT NULL COMMENT '请求URL',
-  `request_method` varchar(16)          DEFAULT NULL COMMENT '请求方式',
-  `request_params` text                 DEFAULT NULL COMMENT '请求参数',
-  `status`         tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-失败 1-成功',
-  `error_message`  text                 DEFAULT NULL COMMENT '错误信息',
-  `ip`             varchar(45)          DEFAULT NULL COMMENT '操作IP',
-  `os`             varchar(64)          DEFAULT NULL COMMENT '操作系统',
-  `browser`        varchar(64)          DEFAULT NULL COMMENT '浏览器',
-  `spend_time`     int(11)              DEFAULT NULL COMMENT '耗时(ms)',
-  `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
-  PRIMARY KEY (`id`)
+    `id`             varchar(32) NOT NULL COMMENT '主键id',
+    `user_id`        varchar(32)          DEFAULT NULL COMMENT '用户ID',
+    `username`       varchar(32)          DEFAULT NULL COMMENT '用户名',
+    `operation`      varchar(255)         DEFAULT NULL COMMENT '操作内容',
+    `operation_type` tinyint(1)  NOT NULL DEFAULT 1 COMMENT '操作类型 1-新增 2-修改 3-删除 4-查询',
+    `biz_type`       VARCHAR(64)          DEFAULT NULL COMMENT '业务类型（如：user, order）',
+    `biz_id`         VARCHAR(32)          DEFAULT NULL COMMENT '业务ID（关联具体数据）',
+    `request_url`    varchar(255)         DEFAULT NULL COMMENT '请求URL',
+    `request_method` varchar(16)          DEFAULT NULL COMMENT '请求方式',
+    `request_params` text                 DEFAULT NULL COMMENT '请求参数',
+    `status`         tinyint(1)  NOT NULL DEFAULT 1 COMMENT '状态 0-失败 1-成功',
+    `error_message`  text                 DEFAULT NULL COMMENT '错误信息',
+    `ip`             varchar(45)          DEFAULT NULL COMMENT '操作IP',
+    `os`             varchar(64)          DEFAULT NULL COMMENT '操作系统',
+    `browser`        varchar(64)          DEFAULT NULL COMMENT '浏览器',
+    `spend_time`     int(11)              DEFAULT NULL COMMENT '耗时(ms)',
+    `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '操作日志';
@@ -261,19 +261,19 @@ DROP TABLE IF EXISTS `sys_notice`;
 
 CREATE TABLE `sys_notice`
 (
-  `id`          varchar(32)  NOT NULL COMMENT '主键id',
-  `title`       varchar(255) NOT NULL COMMENT '标题',
-  `content`     text         NOT NULL COMMENT '内容',
-  `type`        tinyint(1)   NOT NULL DEFAULT 1 COMMENT '类型 1-公告 2-通知',
-  `status`      tinyint(1)   NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
-  `is_deleted`  tinyint(1)   NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by`   varchar(32)           DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by`   varchar(32)           DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `idx_is_deleted` (`is_deleted`),
-  KEY `idx_status` (`status`)
+    `id`          varchar(32)  NOT NULL COMMENT '主键id',
+    `title`       varchar(255) NOT NULL COMMENT '标题',
+    `content`     text         NOT NULL COMMENT '内容',
+    `type`        tinyint(1)   NOT NULL DEFAULT 1 COMMENT '类型 1-公告 2-通知',
+    `status`      tinyint(1)   NOT NULL DEFAULT 1 COMMENT '状态 0-禁用 1-启用',
+    `is_deleted`  tinyint(1)   NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_by`   varchar(32)           DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   varchar(32)           DEFAULT NULL COMMENT '更新人',
+    `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_is_deleted` (`is_deleted`),
+    KEY `idx_status` (`status`)
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '通知公告表';
@@ -284,6 +284,50 @@ INSERT INTO `sys_user` (`id`, `username`, `password`, `real_name`, `gender`, `av
                         `login_time`, `status`, `is_deleted`, `create_by`, `create_time`, `update_by`, `update_time`)
 VALUES ('1', 'admin', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '超级管理员', 1, NULL,
         'admin@example.com', NULL, NULL, 1, 0, 'system', NOW(), NULL, NOW());
+
+-- 生成20个测试用户
+INSERT INTO `sys_user` (`id`, `username`, `password`, `real_name`, `gender`, `avatar`, `email`, `status`, `is_deleted`,
+                        `create_by`, `create_time`)
+VALUES ('2', 'testuser1', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户1', 1, NULL,
+        'test1@example.com', 1, 0, 'system', NOW()),
+       ('3', 'testuser2', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户2', 2, NULL,
+        'test2@example.com', 1, 0, 'system', NOW()),
+       ('4', 'testuser3', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户3', 1, NULL,
+        'test3@example.com', 1, 0, 'system', NOW()),
+       ('5', 'testuser4', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户4', 2, NULL,
+        'test4@example.com', 1, 0, 'system', NOW()),
+       ('6', 'testuser5', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户5', 1, NULL,
+        'test5@example.com', 1, 0, 'system', NOW()),
+       ('7', 'testuser6', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户6', 2, NULL,
+        'test6@example.com', 1, 0, 'system', NOW()),
+       ('8', 'testuser7', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户7', 1, NULL,
+        'test7@example.com', 1, 0, 'system', NOW()),
+       ('9', 'testuser8', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户8', 2, NULL,
+        'test8@example.com', 1, 0, 'system', NOW()),
+       ('10', 'testuser9', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户9', 1, NULL,
+        'test9@example.com', 1, 0, 'system', NOW()),
+       ('11', 'testuser10', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户10', 2, NULL,
+        'test10@example.com', 1, 0, 'system', NOW()),
+       ('12', 'testuser11', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户11', 1, NULL,
+        'test11@example.com', 1, 0, 'system', NOW()),
+       ('13', 'testuser12', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户12', 2, NULL,
+        'test12@example.com', 1, 0, 'system', NOW()),
+       ('14', 'testuser13', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户13', 1, NULL,
+        'test13@example.com', 1, 0, 'system', NOW()),
+       ('15', 'testuser14', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户14', 2, NULL,
+        'test14@example.com', 1, 0, 'system', NOW()),
+       ('16', 'testuser15', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户15', 1, NULL,
+        'test15@example.com', 1, 0, 'system', NOW()),
+       ('17', 'testuser16', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户16', 2, NULL,
+        'test16@example.com', 1, 0, 'system', NOW()),
+       ('18', 'testuser17', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户17', 1, NULL,
+        'test17@example.com', 1, 0, 'system', NOW()),
+       ('19', 'testuser18', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户18', 2, NULL,
+        'test18@example.com', 1, 0, 'system', NOW()),
+       ('20', 'testuser19', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户19', 1, NULL,
+        'test19@example.com', 1, 0, 'system', NOW()),
+       ('21', 'testuser20', '$2a$12$.GkA1usulfiXs.7J49wm5u2pyPwdgCJmoyPnu8xGZd8nd.ra8kEbW', '测试用户20', 2, NULL,
+        'test20@example.com', 1, 0, 'system', NOW());
 
 -- 初始化部门数据（含更多部门及多级结构）
 INSERT INTO `sys_depart` (`id`, `parent_id`, `depart_name`, `depart_code`, `leader`, `phone`, `email`, `status`, `sort`,
@@ -320,13 +364,13 @@ VALUES ('10001', '1', '1');
 INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `menu_code`, `type`, `path`, `component`, `permission`, `icon`,
                         `hidden`, `layout`, `sort`, `status`, `is_deleted`, `create_by`, `create_time`, `update_by`,
                         `update_time`)
-VALUES ('1', 0, '仪表盘', 'dashboard', 1, '/dashboard', 'dashboard/index', NULL, 'dashboard', 0, 'default', 1, 1, 0,
+VALUES ('1', 0, '仪表盘', 'dashboard', 1, '/dashboard', 'dashboard/index', NULL, 'DataBoard', 0, 'default', 1, 1, 0,
         'system', NOW(), NULL, NOW()),
 
        ('2', 0, '系统管理', 'system', 1, '/system', 'Layout', NULL, 'setting', 0, 'default', 2, 1, 0, 'system',
         NOW(), NULL, NOW()),
 
-       ('21', '2', '用户管理', 'user', 1, '/system/user', 'system/user/index', 'sys:user:view', 'user', 0, 'default', 1,
+       ('21', '2', '用户管理', 'user', 1, '/system/user', 'system/user/index', 'sys:user:list', 'User', 0, 'default', 1,
         1, 0, 'system', NOW(), NULL, NOW()),
        ('211', '21', '添加用户', 'user_add', 2, NULL, NULL, 'sys:user:add', '', 0, NULL, 1, 1, 0, 'system', NOW(), NULL,
         NOW()),
@@ -335,7 +379,8 @@ VALUES ('1', 0, '仪表盘', 'dashboard', 1, '/dashboard', 'dashboard/index', NU
        ('213', '21', '删除用户', 'user_delete', 2, NULL, NULL, 'sys:user:delete', '', 0, NULL, 3, 1, 0, 'system', NOW(),
         NULL, NOW()),
 
-       ('22', '2', '角色管理', 'role', 1, '/system/role', 'system/role/index', 'sys:role:view', 'role', 0, 'default', 2,
+       ('22', '2', '角色管理', 'role', 1, '/system/role', 'system/role/index', 'sys:role:list', 'UserFilled', 0,
+        'default', 2,
         1, 0, 'system', NOW(), NULL, NOW()),
        ('221', '22', '添加角色', 'role_add', 2, NULL, NULL, 'sys:role:add', '', 0, NULL, 1, 1, 0, 'system', NOW(), NULL,
         NOW()),
@@ -344,7 +389,7 @@ VALUES ('1', 0, '仪表盘', 'dashboard', 1, '/dashboard', 'dashboard/index', NU
        ('223', '22', '删除角色', 'role_delete', 2, NULL, NULL, 'sys:role:delete', '', 0, NULL, 3, 1, 0, 'system', NOW(),
         NULL, NOW()),
 
-       ('23', '2', '菜单管理', 'menu', 1, '/system/menu', 'system/menu/index', 'sys:menu:view', 'menu', 0, 'default', 3,
+       ('23', '2', '菜单管理', 'menu', 1, '/system/menu', 'system/menu/index', 'sys:menu:list', 'Menu', 0, 'default', 3,
         1, 0, 'system', NOW(), NULL, NOW()),
        ('231', '23', '添加菜单', 'menu_add', 2, NULL, NULL, 'sys:menu:add', '', 0, NULL, 1, 1, 0, 'system', NOW(), NULL,
         NOW()),
@@ -353,14 +398,26 @@ VALUES ('1', 0, '仪表盘', 'dashboard', 1, '/dashboard', 'dashboard/index', NU
        ('233', '23', '删除菜单', 'menu_delete', 2, NULL, NULL, 'sys:menu:delete', '', 0, NULL, 3, 1, 0, 'system', NOW(),
         NULL, NOW()),
 
-       ('24', '2', '部门管理', 'depart', 1, '/system/depart', 'system/depart/index', 'sys:depart:view', 'apartment', 0,
+       ('24', '2', '部门管理', 'depart', 1, '/system/depart', 'system/depart/index', 'sys:depart:list',
+        'OfficeBuilding', 0,
         'default', 4, 1, 0, 'system', NOW(), NULL, NOW()),
        ('241', '24', '添加部门', 'depart_add', 2, NULL, NULL, 'sys:depart:add', '', 0, NULL, 1, 1, 0, 'system', NOW(),
         NULL, NOW()),
        ('242', '24', '编辑部门', 'depart_edit', 2, NULL, NULL, 'sys:depart:edit', '', 0, NULL, 2, 1, 0, 'system', NOW(),
         NULL, NOW()),
        ('243', '24', '删除部门', 'depart_delete', 2, NULL, NULL, 'sys:depart:delete', '', 0, NULL, 3, 1, 0, 'system',
+        NOW(), NULL, NOW()),
+
+       ('25', '2', '数据字典', 'dict', 1, '/system/dict', 'system/dict/index', 'sys:dict:list',
+        'List', 0,
+        'default', 4, 1, 0, 'system', NOW(), NULL, NOW()),
+       ('251', '25', '添加字典', 'dict_add', 2, NULL, NULL, 'sys:dict:add', '', 0, NULL, 1, 1, 0, 'system', NOW(),
+        NULL, NOW()),
+       ('252', '25', '编辑字典', 'dict_edit', 2, NULL, NULL, 'sys:dict:edit', '', 0, NULL, 2, 1, 0, 'system', NOW(),
+        NULL, NOW()),
+       ('253', '25', '删除字典', 'dict_delete', 2, NULL, NULL, 'sys:dict:delete', '', 0, NULL, 3, 1, 0, 'system',
         NOW(), NULL, NOW());
+
 
 -- 初始化角色菜单关系（角色1拥有全部菜单按钮权限）
 INSERT INTO `sys_role_menu` (`id`, `role_id`, `menu_id`)
@@ -381,7 +438,11 @@ VALUES ('10001', '1', '1'),
        ('10024', '1', '24'),
        ('10241', '1', '241'),
        ('10242', '1', '242'),
-       ('10243', '1', '243');
+       ('10243', '1', '243'),
+       ('10025', '1', '25'),
+       ('10251', '1', '251'),
+       ('10252', '1', '252'),
+       ('10253', '1', '253');
 
 -- 初始化字典数据
 INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
