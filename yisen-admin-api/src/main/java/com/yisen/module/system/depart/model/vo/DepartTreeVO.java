@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +84,7 @@ public class DepartTreeVO {
      */
     @Schema(description = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -97,7 +97,7 @@ public class DepartTreeVO {
      */
     @Schema(description = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDate updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 子部门列表

@@ -19,9 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,7 +77,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
         List<MenuTreeVO> userMenus = baseMapper.selectMenuListByUserId(userId);
 
         // 构建树形结构
-        return buildMenuTree(userMenus, "0");
+        List<MenuTreeVO> menuTreeVOS = buildMenuTree(userMenus, "0");
+        return menuTreeVOS;
     }
 
     @Override
@@ -203,23 +202,44 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
     }
 
     /**
-     * 构建菜单树
+     * 构建菜单树（非递归，O(n) 时间复杂度）
      */
-    private List<MenuTreeVO> buildMenuTree(List<MenuTreeVO> allMenus, String parentId) {
-        List<MenuTreeVO> tree = new ArrayList<>();
+    public List<MenuTreeVO> buildMenuTree(List<MenuTreeVO> allMenus, String rootParentId) {
+        if (allMenus == null || allMenus.isEmpty()) {
+            return Collections.emptyList();
+        }
 
+        // 1. 创建 id -> menu 的映射
+        Map<String, MenuTreeVO> menuMap = new HashMap<>();
         for (MenuTreeVO menu : allMenus) {
-            if (parentId.equals(menu.getParentId())) {
-                // 递归查找子菜单
-                List<MenuTreeVO> children = buildMenuTree(allMenus, menu.getId());
-                if (!children.isEmpty()) {
-                    menu.setChildren(children);
+            // 初始化 children 避免 null
+            menu.setChildren(new ArrayList<>());
+            menuMap.put(menu.getId(), menu);
+        }
+
+        // 2. 构建树结构
+        List<MenuTreeVO> roots = new ArrayList<>();
+        for (MenuTreeVO menu : allMenus) {
+            String parentId = menu.getParentId();
+
+            // 处理根节点：parentId 为 null、空、或等于 rootParentId
+            if (parentId == null || parentId.isEmpty() || rootParentId.equals(parentId)) {
+                roots.add(menu);
+            } else {
+                // 尝试挂到父节点下
+                MenuTreeVO parent = menuMap.get(parentId);
+                if (parent != null) {
+                    parent.getChildren().add(menu);
+                } else {
+                    // 孤儿节点（父节点不存在），可选择忽略或加入根节点
+                    // 这里建议记录日志，便于排查数据问题
+                    log.warn("Menu[id={}] has invalid parentId: {}", menu.getId(), parentId);
+                     roots.add(menu); // 可选：作为根节点展示
                 }
-                tree.add(menu);
             }
         }
 
-        return tree;
+        return roots;
     }
 
     /**

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -65,5 +65,5 @@ public class SysLoginLog {
     /**
      * 登录时间
      */
-    private LocalDate loginTime;
+    private LocalDateTime loginTime;
 }

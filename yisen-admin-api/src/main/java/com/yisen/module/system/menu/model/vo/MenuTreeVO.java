@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class MenuTreeVO {
      */
     @Schema(description = "创建时间", example = "2025-11-13 10:00:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     /**
      * 子菜单列表

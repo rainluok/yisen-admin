@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -58,7 +58,7 @@ public class DictVO {
      * 创建时间
      */
     @Schema(description = "创建时间")
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -71,7 +71,7 @@ public class DictVO {
      */
     @Schema(description = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDate updateTime;
+    private LocalDateTime updateTime;
 
 }
 

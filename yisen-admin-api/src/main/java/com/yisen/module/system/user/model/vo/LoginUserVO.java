@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class LoginUserVO {
 
     @Schema(description = "最后登录时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDate loginTime;
+    private LocalDateTime loginTime;
 
     @Schema(description = "用户状态 0-禁用 1-启用")
     private Integer status;
