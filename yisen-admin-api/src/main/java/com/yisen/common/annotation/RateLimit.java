@@ -24,6 +24,12 @@ public @interface RateLimit {
     int limit() default 10;
 
     /**
+     * 时间窗口（秒）
+     */
+    int timeWindow() default 1;
+
+
+    /**
      * 限流类型
      */
     enum LimitType {

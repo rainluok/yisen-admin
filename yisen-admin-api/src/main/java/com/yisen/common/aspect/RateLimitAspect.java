@@ -4,6 +4,7 @@ import com.yisen.common.annotation.RateLimit;
 import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
 import com.yisen.common.util.IpUtil;
+import com.yisen.core.context.LoginUserContext;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,14 @@ public class RateLimitAspect {
     // Lua 脚本实现令牌桶算法
     private static final String LUA_SCRIPT =
             "local key = KEYS[1]\n" +
-                    "local limit = tonumber(ARGV[1])\n" +
+                    "local window = tonumber(ARGV[1])  -- 窗口大小（秒）\n" +
+                    "local limit = tonumber(ARGV[2])   -- 限制次数\n" +
                     "local current = tonumber(redis.call('get', key) or '0')\n" +
-                    "if current + 1 > limit then\n" +
+                    "if current >= limit then\n" +
                     "    return 0\n" +
                     "else\n" +
                     "    redis.call('INCRBY', key, 1)\n" +
-                    "    redis.call('expire', key, 1)\n" +
+                    "    redis.call('EXPIRE', key, window)\n" +
                     "    return 1\n" +
                     "end";
     @Resource
@@ -70,12 +72,19 @@ public class RateLimitAspect {
         // 生成限流键
         String key = generateKey(request, method, rateLimit);
         int limit = rateLimit.limit();
+        int window = rateLimit.timeWindow();
 
-        // 执行 Lua 脚本
-        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(LUA_SCRIPT, Long.class);
-        Long result = redisTemplate.execute(redisScript, Collections.singletonList(key), limit);
+        Long result = null;
+        try {
+            // 执行 Lua 脚本
+            DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(LUA_SCRIPT, Long.class);
+            result = redisTemplate.execute(redisScript, Collections.singletonList(key), limit, window);
+        } catch (Exception e) {
+            log.error("接口限流执行异常", e);
+            throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR);
+        }
 
-        if (result == null || result == 0) {
+        if (result == 0) {
             log.warn("接口限流触发: {} 限制 {}/秒", key, limit);
             throw new BusinessException(ResponseCodeEnum.RATE_LIMIT_EXCEEDED);
         }
@@ -94,9 +103,9 @@ public class RateLimitAspect {
             String ip = IpUtil.getIpAddr(request);
             return RATE_LIMIT_KEY_PREFIX + "ip:" + ip + ":" + methodSignature;
         } else {
-            // 基于用户限流（需要从Token中获取用户ID）
-            String userToken = request.getHeader("Authorization");
-            return RATE_LIMIT_KEY_PREFIX + "user:" + userToken + ":" + methodSignature;
+            // 基于用户限流
+            String userId = LoginUserContext.getUserId();
+            return RATE_LIMIT_KEY_PREFIX + "user:" + userId + ":" + methodSignature;
         }
     }
 }
