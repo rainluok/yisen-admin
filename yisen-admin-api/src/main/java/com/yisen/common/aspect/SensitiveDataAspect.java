@@ -7,14 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 /**
  * 敏感数据脱敏切面
- * 使用 AOP 实现敏感数据脱敏，替代 SensitiveDataFilter
+ * 使用 AOP 实现敏感数据脱敏
  * 对返回值进行脱敏处理
  *
  * @author rainluo
@@ -23,12 +27,14 @@ import java.util.*;
 @Slf4j
 @Aspect
 @Component
+@Order(20)
 public class SensitiveDataAspect {
 
     /**
-     * 环绕通知：对所有 Controller 的返回值进行脱敏处理
+     * 环绕通知：对所有返回值进行脱敏处理
+     * 只拦截带有 EnableSensitive 注解的接口或类
      */
-    @Around("execution(* com.yisen.module..controller.*.*(..))")
+    @Around("@within(com.yisen.common.annotation.EnableSensitive) || @annotation(com.yisen.common.annotation.EnableSensitive)")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         // 执行方法
         Object result = joinPoint.proceed();
@@ -46,7 +52,6 @@ public class SensitiveDataAspect {
         } catch (Exception e) {
             log.error("敏感数据脱敏失败", e);
         }
-
         return result;
     }
 
@@ -88,15 +93,6 @@ public class SensitiveDataAspect {
             return;
         }
 
-        if (obj instanceof Map) {
-            // ... 递归 key 和 value
-            return;
-        }
-        if (clazz.isArray()) {
-            // ... 递归每个数组元素
-            return;
-        }
-
         // 👇 处理普通对象字段
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
@@ -124,31 +120,40 @@ public class SensitiveDataAspect {
             return value;
         }
 
-        switch (type) {
-            case MOBILE:
+        return switch (type) {
+            case MOBILE -> {
                 // 手机号：保留前3位和后4位
-                return maskMobile(value);
-            case ID_CARD:
+                yield maskMobile(value);
+            }
+            case ID_CARD -> {
                 // 身份证：保留前6位和后4位
-                return maskIdCard(value);
-            case EMAIL:
+                yield maskIdCard(value);
+            }
+            case EMAIL -> {
                 // 邮箱：保留邮箱前缀第一个字符和@后面的部分
-                return maskEmail(value);
-            case BANK_CARD:
+                yield maskEmail(value);
+            }
+            case BANK_CARD -> {
                 // 银行卡：保留前4位和后4位
-                return maskBankCard(value);
-            case PASSWORD:
+                yield maskBankCard(value);
+            }
+            case PASSWORD -> {
                 // 密码：全部脱敏
-                return "******";
-            case NAME:
+                yield "******";
+            }
+            case NAME -> {
                 // 姓名：保留姓，名字脱敏
-                return maskName(value);
-            case ADDRESS:
+                yield maskName(value);
+            }
+            case ADDRESS -> {
                 // 地址：保留前6个字符
-                return maskAddress(value);
-            default:
-                return value;
-        }
+                yield maskAddress(value);
+            }
+            default -> {
+                log.error("未知的脱敏类型：{}", type);
+                yield value;
+            }
+        };
     }
 
     /**
