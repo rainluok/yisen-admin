@@ -1,4 +1,4 @@
-package com.yisen.common.util;
+package com.yisen.core.context;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeansException;
@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @date 2025/11/14 15:55
  */
 @Component
-public class SpringContextUtils implements ApplicationContextAware {
+public class SpringContext implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
@@ -34,7 +34,7 @@ public class SpringContextUtils implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextUtils.applicationContext = applicationContext;
+        SpringContext.applicationContext = applicationContext;
     }
 
     /**

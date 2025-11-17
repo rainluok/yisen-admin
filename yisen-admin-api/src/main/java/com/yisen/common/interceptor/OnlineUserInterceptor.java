@@ -1,6 +1,6 @@
 package com.yisen.common.interceptor;
 
-import com.yisen.common.util.UserUtil;
+import com.yisen.core.context.LoginUserContext;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,15 +23,14 @@ public class OnlineUserInterceptor implements HandlerInterceptor {
 
     private static final String ONLINE_USER_KEY_PREFIX = "online:user:";
     private static final long ONLINE_USER_EXPIRE_MINUTES = 30;
-    @Resource
-    private UserUtil userUtil;
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
-            String userId = userUtil.getUserId();
+            String userId = LoginUserContext.getUserId();
             if (userId != null) {
                 // 更新在线状态
                 String onlineKey = ONLINE_USER_KEY_PREFIX + userId;

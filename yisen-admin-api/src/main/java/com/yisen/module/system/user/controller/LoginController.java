@@ -5,10 +5,9 @@ import com.yisen.common.annotation.RequirePermission;
 import com.yisen.common.enums.BusinessType;
 import com.yisen.common.enums.OperationType;
 import com.yisen.common.result.Result;
-import com.yisen.common.util.UserUtil;
+import com.yisen.core.context.LoginUserContext;
 import com.yisen.module.system.user.model.dto.LoginDTO;
 import com.yisen.module.system.user.model.dto.UserResetPasswordDTO;
-import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final SysUserService sysUserService;
-    private final UserUtil userUtil;
 
     /**
      * 用户登录
@@ -51,7 +49,7 @@ public class LoginController {
     @GetMapping("/userInfo")
     @Operation(summary = "获取当前用户信息", description = "获取当前登录用户的详细信息")
     public Result<LoginUserVO> getUserInfo() {
-        LoginUserVO userInfo = userUtil.getUser();
+        LoginUserVO userInfo = LoginUserContext.getUser();
         return Result.success(userInfo);
     }
 

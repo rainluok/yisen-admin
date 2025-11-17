@@ -4,8 +4,7 @@ import com.yisen.common.annotation.RequirePermission;
 import com.yisen.common.annotation.RequireRole;
 import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
-import com.yisen.common.util.UserUtil;
-import jakarta.annotation.Resource;
+import com.yisen.core.context.LoginUserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,9 +30,6 @@ import java.util.Set;
 @Order(2) // 确保在认证拦截器之后执行
 public class PermissionAspect {
 
-    @Resource
-    private UserUtil userUtil;
-
     /**
      * 前置通知：检查角色权限
      */
@@ -42,7 +38,7 @@ public class PermissionAspect {
         String[] requiredRoles = requireRole.value();
         boolean requireAll = requireRole.requireAll();
 
-        Set<String> userRoles = userUtil.getUserRoles();
+        Set<String> userRoles = LoginUserContext.getUser().getRoles();
 
         if (requireAll) {
             // 需要拥有所有角色
@@ -78,7 +74,7 @@ public class PermissionAspect {
         String[] requiredPermissions = requirePermission.value();
         boolean requireAll = requirePermission.requireAll();
 
-        Set<String> userPermissions = userUtil.getCurrentUserPermissions();
+        Set<String> userPermissions = LoginUserContext.getUser().getPermissions();
 
         if (requireAll) {
             // 需要拥有所有权限

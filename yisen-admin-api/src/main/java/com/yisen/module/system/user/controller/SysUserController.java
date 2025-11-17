@@ -9,7 +9,6 @@ import com.yisen.common.model.PageResult;
 import com.yisen.common.result.Result;
 import com.yisen.module.system.user.model.dto.UserAddDTO;
 import com.yisen.module.system.user.model.dto.UserQueryDTO;
-import com.yisen.module.system.user.model.dto.UserResetPasswordDTO;
 import com.yisen.module.system.user.model.dto.UserUpdateDTO;
 import com.yisen.module.system.user.model.vo.UserDetailVO;
 import com.yisen.module.system.user.service.SysUserService;

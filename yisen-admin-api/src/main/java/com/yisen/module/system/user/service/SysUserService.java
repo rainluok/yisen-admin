@@ -81,5 +81,5 @@ public interface SysUserService extends IService<SysUser> {
      * @param dto 重置密码DTO
      */
     void resetPassword(UserResetPasswordDTO dto);
-    
+
 }

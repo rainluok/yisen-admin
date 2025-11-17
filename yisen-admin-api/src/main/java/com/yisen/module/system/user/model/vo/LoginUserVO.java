@@ -2,11 +2,9 @@ package com.yisen.module.system.user.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -58,5 +56,6 @@ public class LoginUserVO {
     @Schema(description = "权限")
     private Set<String> permissions;
 
-    public LoginUserVO(){}
+    public LoginUserVO() {
+    }
 }

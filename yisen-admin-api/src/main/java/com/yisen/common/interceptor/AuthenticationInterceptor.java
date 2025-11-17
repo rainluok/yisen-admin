@@ -4,7 +4,7 @@ import com.yisen.common.annotation.Anonymous;
 import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
 import com.yisen.common.util.JwtUtil;
-import com.yisen.common.util.UserUtil;
+import com.yisen.core.context.LoginUserContext;
 import com.yisen.module.system.user.model.vo.LoginUserVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,8 +31,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Resource
     private JwtUtil jwtUtil;
 
-    @Resource
-    private UserUtil userUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -78,7 +76,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         // 将用户信息注入到 ThreadLocal
-        userUtil.setUser(userInfo);
+        LoginUserContext.setUser(userInfo);
 
         log.debug("认证成功，用户: {}, URI: {}", userInfo.getUsername(), request.getRequestURI());
         return true;
@@ -88,7 +86,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) {
         // 清理 ThreadLocal，避免内存泄漏
-        userUtil.clear();
+        LoginUserContext.clear();
     }
 }
 

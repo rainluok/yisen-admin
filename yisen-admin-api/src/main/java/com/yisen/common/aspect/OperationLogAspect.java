@@ -3,7 +3,7 @@ package com.yisen.common.aspect;
 import com.yisen.common.annotation.OperationLog;
 import com.yisen.common.util.BrowserUtil;
 import com.yisen.common.util.IpUtil;
-import com.yisen.common.util.UserUtil;
+import com.yisen.core.context.LoginUserContext;
 import com.yisen.module.system.log.model.po.SysLog;
 import com.yisen.module.system.log.service.SysLogService;
 import jakarta.annotation.Resource;
@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Date;
-
 /**
  * 操作日志切面（异步）
  * 使用 AOP 实现操作日志记录，替代 OperationLogInterceptor
@@ -34,8 +32,7 @@ import java.util.Date;
 public class OperationLogAspect {
 
     private static final ThreadLocal<Long> START_TIME = new ThreadLocal<>();
-    @Resource
-    private UserUtil userUtil;
+
     @Resource
     private SysLogService sysLogService;
 
@@ -89,8 +86,8 @@ public class OperationLogAspect {
             SysLog sysLog = new SysLog();
 
             // 基本信息
-            sysLog.setUserId(userUtil.getUserId());
-            sysLog.setUsername(userUtil.getUsername());
+            sysLog.setUserId(LoginUserContext.getUserId());
+            sysLog.setUsername(LoginUserContext.getUsername());
             sysLog.setOperation(operationLog.value());
             sysLog.setOperationType(operationLog.type().getCode());  // 获取枚举的 code 值
             sysLog.setBizType(operationLog.bizType().getCode());      // 获取枚举的 code 值
@@ -121,7 +118,7 @@ public class OperationLogAspect {
             if (startTime != null) {
                 sysLog.setSpendTime((int) (System.currentTimeMillis() - startTime));
             }
-            
+
             // 保存日志
             sysLogService.save(sysLog);
 

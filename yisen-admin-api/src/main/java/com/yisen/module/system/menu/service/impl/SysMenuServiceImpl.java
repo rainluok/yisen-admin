@@ -234,7 +234,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
                     // 孤儿节点（父节点不存在），可选择忽略或加入根节点
                     // 这里建议记录日志，便于排查数据问题
                     log.warn("Menu[id={}] has invalid parentId: {}", menu.getId(), parentId);
-                     roots.add(menu); // 可选：作为根节点展示
+                    roots.add(menu); // 可选：作为根节点展示
                 }
             }
         }

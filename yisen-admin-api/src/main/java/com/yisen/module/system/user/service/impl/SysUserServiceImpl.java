@@ -12,7 +12,7 @@ import com.yisen.common.model.PageResult;
 import com.yisen.common.service.RedisService;
 import com.yisen.common.util.JwtUtil;
 import com.yisen.common.util.PasswordUtil;
-import com.yisen.common.util.UserUtil;
+import com.yisen.core.context.LoginUserContext;
 import com.yisen.module.system.role.mapper.SysRoleMapper;
 import com.yisen.module.system.user.mapper.SysUserMapper;
 import com.yisen.module.system.user.mapper.SysUserRoleMapper;
@@ -21,7 +21,6 @@ import com.yisen.module.system.user.model.po.SysUser;
 import com.yisen.module.system.user.model.po.SysUserRole;
 import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.model.vo.UserDetailVO;
-import com.yisen.module.system.user.model.vo.LoginUserVO;
 import com.yisen.module.system.user.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +47,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     private final SysUserRoleMapper sysUserRoleMapper;
     private final SysRoleMapper sysRoleMapper;
-    private final UserUtil userUtil;
     private final JwtUtil jwtUtil;
     private final RedisService redisService;
 
@@ -92,7 +89,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     public void logout() {
-        redisService.delete(CacheKey.AUTH_TOKEN + userUtil.getUserId());
+        redisService.delete(CacheKey.AUTH_TOKEN + LoginUserContext.getUserId());
     }
 
     @Override

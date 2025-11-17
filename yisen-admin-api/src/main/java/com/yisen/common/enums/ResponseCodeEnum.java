@@ -97,7 +97,7 @@ public enum ResponseCodeEnum {
     DICT_NOT_EXISTS(24001, "字典不存在"),
     DICT_ITEM_VALUE_EXISTS(2402, "字典项值已存在"),
     DICT_ITEM_NOT_EXISTS(2403, "字典项不存在"),
-    DICT_CODE_EXISTS (2404, "字典编码已存在"),
+    DICT_CODE_EXISTS(2404, "字典编码已存在"),
 
     LOG_NOT_EXISTS(2501, "日志不存在"),
 

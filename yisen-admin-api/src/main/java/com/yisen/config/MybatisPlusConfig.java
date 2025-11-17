@@ -2,8 +2,7 @@ package com.yisen.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.yisen.common.util.UUIDUtil;
-import com.yisen.common.util.UserUtil;
-import jakarta.annotation.Resource;
+import com.yisen.core.context.LoginUserContext;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,12 +17,9 @@ import java.util.Date;
 @Configuration
 public class MybatisPlusConfig implements MetaObjectHandler {
 
-    @Resource
-    private UserUtil userUtil;
-
     @Override
     public void insertFill(MetaObject metaObject) {
-        String currentUserId = userUtil.getUserId();
+        String currentUserId = LoginUserContext.getUserId();
         // 填充ID（如果字段名为"id"，且为null）
         if (metaObject.hasSetter("id") && getFieldValByName("id", metaObject) == null) {
             setFieldValByName("id", UUIDUtil.generateUUID(), metaObject);
@@ -54,7 +50,7 @@ public class MybatisPlusConfig implements MetaObjectHandler {
         }
         // 修改人
         if (metaObject.hasSetter("updateBy")) {
-            setFieldValByName("updateBy", userUtil.getUserId(), metaObject);
+            setFieldValByName("updateBy", LoginUserContext.getUserId(), metaObject);
         }
     }
 }
