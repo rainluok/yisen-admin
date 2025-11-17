@@ -11,6 +11,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ import java.util.Collections;
 @Slf4j
 @Aspect
 @Component
+@Order(40)
 public class RateLimitAspect {
 
     private static final String RATE_LIMIT_KEY_PREFIX = "rate:limit:";

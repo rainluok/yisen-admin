@@ -10,6 +10,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 防重复提交切面（基于分布式锁）
- * 使用 AOP 实现防重复提交，替代 RepeatSubmitInterceptor
+ * 使用 AOP 实现防重复提交
  *
  * @author rainluo
  * @date 2025-11-14
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Aspect
 @Component
+@Order(50)
 public class RepeatSubmitAspect {
 
     private static final String REPEAT_SUBMIT_KEY_PREFIX = "repeat:submit:";

@@ -27,7 +27,7 @@ import java.util.Set;
 @Slf4j
 @Aspect
 @Component
-@Order(2) // 确保在认证拦截器之后执行
+@Order(30) // 确保在认证拦截器之后执行
 public class PermissionAspect {
 
     /**
