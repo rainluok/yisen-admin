@@ -1,8 +1,10 @@
 package com.yisen.common.aspect;
 
 import com.yisen.common.annotation.RepeatSubmit;
+import com.yisen.common.constant.CacheKey;
 import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
+import com.yisen.common.service.RedisCache;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -11,13 +13,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 防重复提交切面（基于分布式锁）
@@ -34,7 +34,7 @@ public class RepeatSubmitAspect {
 
     private static final String REPEAT_SUBMIT_KEY_PREFIX = "repeat:submit:";
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisCache redisCache;
 
     /**
      * 前置通知：检查是否重复提交
@@ -58,11 +58,11 @@ public class RepeatSubmitAspect {
         long interval = repeatSubmit.interval();
 
         // 尝试设置键，如果键已存在则说明重复提交
-        Boolean success = redisTemplate.opsForValue().setIfAbsent(
-                key, System.currentTimeMillis(), interval, TimeUnit.SECONDS
+        boolean success = redisCache.setIfAbsent(CacheKey.REPEAT_SUBMIT +
+                key, String.valueOf(System.currentTimeMillis()), interval
         );
 
-        if (Boolean.FALSE.equals(success)) {
+        if (!success) {
             log.warn("检测到重复提交: {}", key);
             throw new BusinessException(ResponseCodeEnum.REPEAT_SUBMIT);
         }
@@ -85,7 +85,7 @@ public class RepeatSubmitAspect {
 
         // 计算参数哈希（简化处理）
         int argsHash = 0;
-        if (args != null && args.length > 0) {
+        if (args != null) {
             for (Object arg : args) {
                 if (arg != null) {
                     // 跳过 HttpServletRequest 等对象
