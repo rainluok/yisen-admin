@@ -9,7 +9,7 @@ import com.yisen.common.enums.ResponseCodeEnum;
 import com.yisen.common.exception.BusinessException;
 import com.yisen.common.model.PageRequest;
 import com.yisen.common.model.PageResult;
-import com.yisen.common.service.RedisService;
+import com.yisen.common.service.RedisCache;
 import com.yisen.common.util.JwtUtil;
 import com.yisen.common.util.PasswordUtil;
 import com.yisen.core.context.LoginUserContext;
@@ -48,7 +48,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     private final SysUserRoleMapper sysUserRoleMapper;
     private final SysRoleMapper sysRoleMapper;
     private final JwtUtil jwtUtil;
-    private final RedisService redisService;
+    private final RedisCache redisCache;
 
     @Override
     public LoginUserVO login(LoginDTO loginDTO) {
@@ -89,7 +89,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     public void logout() {
-        redisService.delete(CacheKey.AUTH_TOKEN + LoginUserContext.getUserId());
+        redisCache.delete(CacheKey.AUTH_TOKEN + LoginUserContext.getUserId());
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.yisen.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yisen.common.filter.*;
-import com.yisen.common.service.RedisService;
+import com.yisen.common.service.RedisCache;
 import jakarta.annotation.Resource;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ import org.springframework.core.Ordered;
 public class FilterConfig {
 
     @Resource
-    private RedisService redisService;
+    private RedisCache redisCache;
 
     @Resource
     private ObjectMapper objectMapper;
@@ -80,7 +80,7 @@ public class FilterConfig {
      */
     @Bean
     public IpBlacklistFilter ipBlacklistFilterBean() {
-        return new IpBlacklistFilter(redisService, objectMapper);
+        return new IpBlacklistFilter(redisCache, objectMapper);
     }
 
     @Bean

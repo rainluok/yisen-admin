@@ -1,7 +1,7 @@
 package com.yisen.common.util;
 
 import com.yisen.common.constant.CacheKey;
-import com.yisen.common.service.RedisService;
+import com.yisen.common.service.RedisCache;
 import com.yisen.module.system.user.model.vo.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -40,7 +40,7 @@ public class JwtUtil {
     private long expireTimeSeconds;
 
     @Resource
-    private RedisService redisService;
+    private RedisCache redisCache;
 
     /**
      * 初始化密钥（在 @Value 注入后执行）
@@ -71,7 +71,7 @@ public class JwtUtil {
                 .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
 
-        redisService.set(CacheKey.AUTH_TOKEN + id, loginUser, expireTimeSeconds);
+        redisCache.set(CacheKey.AUTH_TOKEN + id, loginUser, expireTimeSeconds);
 
         return token;
     }
@@ -156,6 +156,6 @@ public class JwtUtil {
             return null;
         }
         String id = claims.get("id", String.class);
-        return (LoginUserVO) redisService.get(CacheKey.AUTH_TOKEN + id);
+        return redisCache.get(CacheKey.AUTH_TOKEN + id);
     }
 }
