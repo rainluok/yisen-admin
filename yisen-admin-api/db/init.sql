@@ -454,6 +454,51 @@ VALUES ('1', '1', '男', '1', 1, 1, 0),
        ('2', '1', '女', '2', 2, 1, 0),
        ('3', '1', '未知', '0', 3, 1, 0);
 
+-- 用户状态
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
+                        `create_time`, `update_by`, `update_time`)
+VALUES ('2', '用户状态', 'user_status', '用户启用/禁用状态', 1, 0, 'system', NOW(), NULL, NOW());
+
+INSERT INTO `sys_dict_item` (`id`, `dict_id`, `item_name`, `item_value`, `sort`, `status`, `is_deleted`)
+VALUES ('4', '2', '启用', '1', 1, 1, 0),
+       ('5', '2', '禁用', '0', 2, 1, 0);
+
+-- 是否/开关
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
+                        `create_time`, `update_by`, `update_time`)
+VALUES ('3', '是否', 'yes_no', '通用是/否选项', 1, 0, 'system', NOW(), NULL, NOW());
+
+INSERT INTO `sys_dict_item` (`id`, `dict_id`, `item_name`, `item_value`, `sort`, `status`, `is_deleted`)
+VALUES ('6', '3', '是', '1', 1, 1, 0),
+       ('7', '3', '否', '0', 2, 1, 0);
+
+-- 菜单类型（与你的 MenuTreeVO.type 对应）
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
+                        `create_time`, `update_by`, `update_time`)
+VALUES ('4', '菜单类型', 'menu_type', '1-菜单 2-按钮', 1, 0, 'system', NOW(), NULL, NOW());
+
+INSERT INTO `sys_dict_item` (`id`, `dict_id`, `item_name`, `item_value`, `sort`, `status`, `is_deleted`)
+VALUES ('8', '4', '菜单', '1', 1, 1, 0),
+       ('9', '4', '按钮', '2', 2, 1, 0);
+
+-- 布局类型（对应 MenuTreeVO.layout）
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
+                        `create_time`, `update_by`, `update_time`)
+VALUES ('5', '布局类型', 'layout_type', '页面布局类型', 1, 0, 'system', NOW(), NULL, NOW());
+
+INSERT INTO `sys_dict_item` (`id`, `dict_id`, `item_name`, `item_value`, `sort`, `status`, `is_deleted`)
+VALUES ('10', '5', '默认布局', 'default', 1, 1, 0),
+       ('11', '5', '空白布局', 'blank', 2, 1, 0);
+
+-- 菜单显示状态（0-显示，1-隐藏）
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_code`, `description`, `status`, `is_deleted`, `create_by`,
+                        `create_time`, `update_by`, `update_time`)
+VALUES ('8', '菜单显示状态', 'menu_hidden', '控制菜单是否在侧边栏显示', 1, 0, 'system', NOW(), NULL, NOW());
+
+INSERT INTO `sys_dict_item` (`id`, `dict_id`, `item_name`, `item_value`, `sort`, `status`, `is_deleted`)
+VALUES ('19', '8', '显示', '0', 1, 1, 0),
+       ('20', '8', '隐藏', '1', 2, 1, 0);
+
 -- 初始化通知公告
 INSERT INTO `sys_notice` (`id`, `title`, `content`, `type`, `status`, `is_deleted`, `create_by`, `create_time`,
                           `update_by`, `update_time`)
