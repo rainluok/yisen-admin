@@ -104,9 +104,10 @@ public enum ResponseCodeEnum {
     // ==================== 安全类错误码 4xxx ====================
     TOKEN_INVALID(4001, "Token无效"),
     TOKEN_EXPIRED(4002, "Token已过期"),
-    IP_BLACKLISTED(4003, "IP已被封禁"),
-    REPEAT_SUBMIT(4004, "请勿重复提交"),
-    RATE_LIMIT_EXCEEDED(4005, "请求过于频繁，请稍后再试"),
+    TOKEN_KICKED_OUT(4003, "账号已在其他设备登录，您已被踢下线"),
+    IP_BLACKLISTED(4004, "IP已被封禁"),
+    REPEAT_SUBMIT(4005, "请勿重复提交"),
+    RATE_LIMIT_EXCEEDED(4006, "请求过于频繁，请稍后再试"),
 
     /**
      * 文件相关错误 3xxx

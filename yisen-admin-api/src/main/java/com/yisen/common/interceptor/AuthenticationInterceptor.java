@@ -62,11 +62,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             throw new BusinessException(ResponseCodeEnum.UNAUTHORIZED);
         }
 
-        // 验证 Token
-        if (!jwtUtil.validateToken(token)) {
-            log.warn("Token 验证失败: {}", request.getRequestURI());
-            throw new BusinessException(ResponseCodeEnum.TOKEN_INVALID);
-        }
+        // 验证 Token（单端登录验证，会抛出具体的异常）
+        jwtUtil.validateToken(token);
 
         // 解析用户信息并注入上下文
         LoginUserVO userInfo = jwtUtil.getUserInfoFromToken(token);

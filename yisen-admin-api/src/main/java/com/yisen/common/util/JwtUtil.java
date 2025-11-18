@@ -1,6 +1,8 @@
 package com.yisen.common.util;
 
 import com.yisen.common.constant.CacheKey;
+import com.yisen.common.enums.ResponseCodeEnum;
+import com.yisen.common.exception.BusinessException;
 import com.yisen.common.service.RedisCache;
 import com.yisen.module.system.user.model.vo.LoginUserVO;
 import io.jsonwebtoken.Claims;
@@ -11,6 +13,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +27,7 @@ import java.util.Date;
  * @description JWT工具类，依赖io.jsonwebtoken实现
  * @date 2025/11/14 15:31
  */
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -51,7 +55,7 @@ public class JwtUtil {
     }
 
     /**
-     * 生成用户Token并缓存到Redis
+     * 生成用户Token并缓存到Redis（单端登录：踢出旧会话）
      *
      * @param loginUser 用户信息
      * @return token
@@ -71,6 +75,11 @@ public class JwtUtil {
                 .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
 
+        // 单端登录：删除旧的 token，强制踢出之前的登录会话
+        redisCache.delete(CacheKey.AUTH_TOKEN + id);
+        
+        // 缓存新的用户信息和 token
+        loginUser.setToken(token);
         redisCache.set(CacheKey.AUTH_TOKEN + id, loginUser, expireTimeSeconds);
 
         return token;
@@ -110,26 +119,41 @@ public class JwtUtil {
     }
 
     /**
-     * 验证Token是否有效
-     *
+     * 验证Token是否有效（单端登录：校验 token 是否为最新）
+     * 
      * @param token token字符串
-     * @return 是否有效
+     * @throws BusinessException Token验证失败时抛出具体异常
      */
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Claims claims = parseToken(token);
             if (claims == null) {
-                return false;
+                throw new BusinessException(ResponseCodeEnum.TOKEN_INVALID);
             }
 
+            String userId = claims.get("id", String.class);
             String username = claims.get("username", String.class);
-            if (StringUtils.isEmpty(username)) {
-                return false;
+            if (StringUtils.isEmpty(username) || StringUtils.isEmpty(userId)) {
+                throw new BusinessException(ResponseCodeEnum.TOKEN_INVALID);
             }
 
-            return true;
+            // 单端登录验证：从 Redis 获取当前有效的用户信息，比对 token
+            LoginUserVO cachedUser = redisCache.get(CacheKey.AUTH_TOKEN + userId);
+            if (cachedUser == null) {
+                // Redis 中没有用户信息，说明已登出或 token 过期
+                throw new BusinessException(ResponseCodeEnum.TOKEN_EXPIRED);
+            }
+            
+            // 验证当前 token 是否与 Redis 中存储的 token 一致
+            // 如果不一致，说明用户在其他地方登录了（被踢下线）
+            if (!token.equals(cachedUser.getToken())) {
+                throw new BusinessException(ResponseCodeEnum.TOKEN_KICKED_OUT);
+            }
+
         } catch (JwtException e) {
-            return false;
+            // JWT 解析异常，token 格式错误或签名验证失败
+            log.error("JWT 解析异常：{}", e.getMessage());
+            throw new BusinessException(ResponseCodeEnum.TOKEN_INVALID);
         }
     }
 
